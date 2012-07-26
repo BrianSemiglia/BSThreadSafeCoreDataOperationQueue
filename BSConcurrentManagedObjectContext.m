@@ -67,7 +67,8 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
             withCompletionHandler:(void (^)(NSError *error))completionHandler
 {
     dispatch_queue_t returnQueue = dispatch_get_current_queue();
-
+    NSArray *objectIDsCopy = [objectIDs copy];
+    
     NSError *error = nil;
     [self save:&error];
     
@@ -82,7 +83,7 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
     NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:^
     {
         if (self.shouldNotifyOtherContexts) {
-            for (NSManagedObjectID *objectID in objectIDs)
+            for (NSManagedObjectID *objectID in objectIDsCopy)
                 [[self.parentContext objectWithID:objectID] willAccessValueForKey:nil];
         }
 
@@ -91,7 +92,7 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
         if (self.shouldNotifyOtherContexts) {
             // Self notifies all other child contexts of change but removes itself as a listener b/c self has already been updated for the changes
             self.shouldListenForOtherContextChanges = NO;
-            [[NSNotificationCenter defaultCenter] postNotificationName:contextDidSaveNotification object:objectIDs];
+            [[NSNotificationCenter defaultCenter] postNotificationName:contextDidSaveNotification object:objectIDsCopy];
             self.shouldListenForOtherContextChanges = YES;
         }
         
@@ -186,6 +187,9 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:contextDidSaveNotification
+                                                  object:nil];
     [_operationQueue release];
     [_parentContext release];
     [super dealloc];
