@@ -34,4 +34,5 @@ Subclass of NSManagedObjectContext for concurrent saving and fetching with Core 
                            withCompletionHandler:^(NSArray *fetchedObjects) {
                                 NSLog(@"%@", fetchedObjects);
                            }];
+        [context release];
     }
