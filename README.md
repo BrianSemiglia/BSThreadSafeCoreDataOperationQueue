@@ -1,9 +1,9 @@
-ConcurrentManagedObjectContext
+BSConcurrentManagedObjectContext
 ==============================
-Custom NSManagedObjectContext for concurrent saving and fetching with Core Data. iOS 4+
+A custom NSManagedObjectContext for concurrent saving and fetching with Core Data. iOS 4+
 - - -
 
-The first time a BSConcurrentManagedObjectContext is created, a singleton parent context is also created. From then on any BSConcurrentManagedObjectContext's created save to that parent context. The singleton parent context runs on a private serial queue in the background. This removes the need for a shared NSManagedObjectContext within your application delegate. A BSConcurrentManagedObjectContext has the components for assigning it's perisistentStoreCoordinator within it. This was done for convenience and to ensure that the child and parent contexts are on the same page.
+BSConcurrentManagedObjectContext comes with its very own parent context baked into it. The parent context is created on demand the first time a BSCMOC is created and remains a singleton for the remaining session. From then on any BSCMOC created save to that parent context. The parent context runs on a singleton serial NSOperationQueue (also baked in) in the background. This removes the need for a shared NSManagedObjectContext within your application delegate. A BSCMOC also has the components for assigning it's perisistentStoreCoordinator within it. This was done for convenience and to ensure that the child and parent contexts are on the same page.
 
 All saves and fetches are executed asynchronously but dispatched to a serial queue, ensuring that saves happen in the order that they were submitted. The completion handler is run on the thread that it's method was called on.
 
