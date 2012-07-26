@@ -29,22 +29,28 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
                   withCompletionHandler:(void (^)(NSArray *fetchedObjects))completionHandler
 {
     dispatch_queue_t returnQueue = dispatch_get_current_queue();
-
-    NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:^{
+    NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:^
+    {
         NSError *error = nil;
         NSArray *fetchedObjects = [self.parentContext executeFetchRequest:request error:&error];
+        
+        NSMutableArray *objectIDs = [[NSMutableArray alloc] initWithCapacity:fetchedObjects.count];
+        for (NSManagedObject *object in fetchedObjects) {
+            [objectIDs addObject:object.objectID];
+        }
         
         dispatch_async(returnQueue, ^
         {
             NSMutableArray *results = [[NSMutableArray alloc] initWithCapacity:fetchedObjects.count];
-            for (NSManagedObject *object in fetchedObjects) {
-                [results addObject:[returnContext objectWithID:object.objectID]];
+            for (NSManagedObjectID *objectID in objectIDs) {
+                [results addObject:[returnContext objectWithID:objectID]];
             }
             
             // Reciever determines queue that completion handler will run on.
             completionHandler(results);
         });
     }];
+    dispatch_release(returnQueue);
     
     blockOperation.threadPriority = 0;
     [self.operationQueue addOperation:blockOperation];
