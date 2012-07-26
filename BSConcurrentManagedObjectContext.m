@@ -36,7 +36,9 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
         if (error) {
             dispatch_async(returnQueue, ^{
                 completionHandler(nil, error);
-            }
+            });
+            dispatch_release(returnQueue);
+            return;
         }
         
         NSMutableArray *objectIDs = [[NSMutableArray alloc] initWithCapacity:fetchedObjects.count];
@@ -52,6 +54,7 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
             }
             
             completionHandler(results, error);
+            [results release];
         });
     }];
     dispatch_release(returnQueue);
@@ -71,8 +74,9 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
     if (error) {
         dispatch_async(returnQueue, ^{
             completionHandler(error);
-            return;
         });
+        dispatch_release(returnQueue);
+        return;
     }
     
     NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:^
@@ -96,6 +100,7 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
         });
     }];
     
+    dispatch_release(returnQueue);
     blockOperation.threadPriority = 0;
     [self.operationQueue addOperation:blockOperation];
 }
