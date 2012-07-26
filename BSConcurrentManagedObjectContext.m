@@ -46,7 +46,6 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
                 [results addObject:[returnContext objectWithID:objectID]];
             }
             
-            // Reciever determines queue that completion handler will run on.
             completionHandler(results);
         });
     }];
@@ -59,13 +58,16 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
 - (void)saveObjectsUsingObjectIDs:(NSArray *)objectIDs
             withCompletionHandler:(void (^)(NSError *error))completionHandler
 {
+    dispatch_queue_t returnQueue = dispatch_get_current_queue();
+
     NSError *error = nil;
     [self save:&error];
     
     if (error) {
-        // Reciever determines queue that completion handler will run on.
-        completionHandler(error);
-        return;
+        dispatch_async(returnQueue, ^{
+            completionHandler(error);
+            return;
+        });
     }
     
     NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:^
@@ -84,8 +86,9 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
             self.shouldListenForOtherContextChanges = YES;
         }
         
-        // Reciever determines queue that completion handler will run on.
-        completionHandler(error);
+        dispatch_async(returnQueue, ^{
+            completionHandler(error);
+        });
     }];
     
     blockOperation.threadPriority = 0;
