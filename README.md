@@ -1,7 +1,7 @@
 ConcurrentManagedObjectContext
 ==============================
 
-Subclass of NSManagedObjectContext for concurrent saving and fetching with Core Data.
+Custom NSManagedObjectContext for concurrent saving and fetching with Core Data.
 
     - (void)sampleSave
     {
