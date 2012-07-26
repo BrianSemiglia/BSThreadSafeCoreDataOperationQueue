@@ -24,11 +24,8 @@ Subclass of NSManagedObjectContext for concurrent saving and fetching with Core 
         MFConcurrentManagedObjectContext *context = [[MFConcurrentManagedObjectContext alloc] init];
         
         NSFetchRequest *request = [[NSFetchRequest alloc] init];
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Entry" inManagedObjectContext:context];
-        
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Entry" inManagedObjectContext:context];        
         request.entity = entity;
-        request.returnsObjectsAsFaults = YES;
-        request.fetchBatchSize = 4;
         
         [context executeFetchRequest:request
                withCompletionHandler:^(NSArray *fetchedObjectIDs)
