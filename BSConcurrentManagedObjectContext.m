@@ -25,14 +25,19 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
 @synthesize shouldNotifyOtherContexts = _shouldNotifyOtherContexts;
 
 - (void)executeFetchRequest:(NSFetchRequest *)request
-      withCompletionHandler:(void (^)(NSArray *fetchedObjects))completionHandler
+      withCompletionHandler:(void (^)(NSArray *fetchedObjectIDs))completionHandler
 {
     NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:^{
         NSError *error = nil;
         NSArray *fetchedObjects = [self.parentContext executeFetchRequest:request error:&error];
         
+        NSMutableArray *fetchedObjectIDs = [[NSMutableArray alloc] initWithCapacity:fetchedObjects.count];
+        for (NSManagedObject *object in fetchedObjects) {
+            [fetchedObjectIDs addObject:object.objectID];
+        }
+        
         // Reciever determines queue that completion handler will run on.
-        completionHandler(fetchedObjects);
+        completionHandler(fetchedObjectIDs);
     }];
     
     blockOperation.threadPriority = 0;

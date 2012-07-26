@@ -15,7 +15,7 @@
 @property (nonatomic, retain) NSManagedObjectContext *parentContext;
 
 - (void)executeFetchRequest:(NSFetchRequest *)request
-      withCompletionHandler:(void (^)(NSArray *fetchedObjects))completionHandler;
+      withCompletionHandler:(void (^)(NSArray *fetchedObjectIDs))completionHandler;
 
 - (void)saveObjectsUsingObjectIDs:(NSArray *)objectIDs
             withCompletionHandler:(void (^)(NSError *error))completionHandler;
