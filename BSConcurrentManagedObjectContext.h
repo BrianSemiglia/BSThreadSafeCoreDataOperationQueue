@@ -14,8 +14,9 @@
 @property (nonatomic, assign) BOOL shouldListenForOtherContextChanges;
 @property (nonatomic, retain) NSManagedObjectContext *parentContext;
 
-- (void)executeFetchRequest:(NSFetchRequest *)request
-      withCompletionHandler:(void (^)(NSArray *fetchedObjectIDs))completionHandler;
+- (void)executeAsynchronousFetchRequest:(NSFetchRequest *)request
+                     andReturnOnContext:(NSManagedObjectContext *)returnContext
+                  withCompletionHandler:(void (^)(NSArray *fetchedObjects))completionHandler;
 
 - (void)saveObjectsUsingObjectIDs:(NSArray *)objectIDs
             withCompletionHandler:(void (^)(NSError *error))completionHandler;

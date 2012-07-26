@@ -24,20 +24,26 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
 @synthesize shouldListenForOtherContextChanges = _shouldListenForOtherContextChanges;
 @synthesize shouldNotifyOtherContexts = _shouldNotifyOtherContexts;
 
-- (void)executeFetchRequest:(NSFetchRequest *)request
-      withCompletionHandler:(void (^)(NSArray *fetchedObjectIDs))completionHandler
+- (void)executeAsynchronousFetchRequest:(NSFetchRequest *)request
+                     andReturnOnContext:(NSManagedObjectContext *)returnContext
+                  withCompletionHandler:(void (^)(NSArray *fetchedObjects))completionHandler
 {
+    dispatch_queue_t returnQueue = dispatch_get_current_queue();
+
     NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:^{
         NSError *error = nil;
         NSArray *fetchedObjects = [self.parentContext executeFetchRequest:request error:&error];
         
-        NSMutableArray *fetchedObjectIDs = [[NSMutableArray alloc] initWithCapacity:fetchedObjects.count];
-        for (NSManagedObject *object in fetchedObjects) {
-            [fetchedObjectIDs addObject:object.objectID];
-        }
-        
-        // Reciever determines queue that completion handler will run on.
-        completionHandler(fetchedObjectIDs);
+        dispatch_async(returnQueue, ^
+        {
+            NSMutableArray *results = [[NSMutableArray alloc] initWithCapacity:fetchedObjects.count];
+            for (NSManagedObject *object in fetchedObjects) {
+                [results addObject:[returnContext objectWithID:object.objectID]];
+            }
+            
+            // Reciever determines queue that completion handler will run on.
+            completionHandler(results);
+        });
     }];
     
     blockOperation.threadPriority = 0;
