@@ -22,13 +22,13 @@ Subclass of NSManagedObjectContext for concurrent saving and fetching with Core 
     - (void)sampleFetch
     {
         BSConcurrentManagedObjectContext *context = [[BSConcurrentManagedObjectContext alloc] init];
-    
+
         NSFetchRequest *request = [[NSFetchRequest alloc] init];
         NSEntityDescription *entity = [NSEntityDescription entityForName:@"Entry" inManagedObjectContext:context];    
         request.entity = entity;
         
-        // Results will be delivered back to thread that this method is called from.
-        // Make sure the context is created on same thread that you call this method from.
+        // Completion handler will run on thread that this method is called from.
+        // Make sure to call this method on the same thread that the context was created on.
         [context executeAsynchronousFetchRequest:request
                            withCompletionHandler:^(NSArray *fetchedObjects) {
                                 NSLog(@"%@", fetchedObjects);
