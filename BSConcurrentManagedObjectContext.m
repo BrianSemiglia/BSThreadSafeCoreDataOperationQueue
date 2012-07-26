@@ -25,7 +25,6 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
 @synthesize shouldNotifyOtherContexts = _shouldNotifyOtherContexts;
 
 - (void)executeAsynchronousFetchRequest:(NSFetchRequest *)request
-                     andReturnOnContext:(NSManagedObjectContext *)returnContext
                   withCompletionHandler:(void (^)(NSArray *fetchedObjects))completionHandler
 {
     dispatch_queue_t returnQueue = dispatch_get_current_queue();
@@ -43,7 +42,7 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
         {
             NSMutableArray *results = [[NSMutableArray alloc] initWithCapacity:fetchedObjects.count];
             for (NSManagedObjectID *objectID in objectIDs) {
-                [results addObject:[returnContext objectWithID:objectID]];
+                [results addObject:[self objectWithID:objectID]];
             }
             
             completionHandler(results);

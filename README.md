@@ -28,9 +28,8 @@ Subclass of NSManagedObjectContext for concurrent saving and fetching with Core 
         request.entity = entity;
         
         // Results will be delivered back to thread that this method is called from.
-        // Make sure the return context is created on same thread that you call this method from.
+        // Make sure the context is created on same thread that you call this method from.
         [context executeAsynchronousFetchRequest:request
-                              andReturnOnContext:context
                            withCompletionHandler:^(NSArray *fetchedObjects) {
                                 NSLog(@"%@", fetchedObjects);
                            }];
