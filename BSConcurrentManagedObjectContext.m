@@ -199,6 +199,9 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
 
 - (NSPersistentStoreCoordinator *)storeCoordinator
 {
+    if (_storeCoordinator)
+        return _storeCoordinator;
+    
     NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Model.sqlite"];
     
     NSError *error = nil;
@@ -223,6 +226,9 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
 
 - (NSManagedObjectModel *)managedObjectModel
 {
+    if (_managedObjectModel)
+        return _managedObjectModel;
+    
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Model" withExtension:@"momd"];
     _managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
     return _managedObjectModel;
