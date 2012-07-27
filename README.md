@@ -13,7 +13,8 @@ All saves and fetches are executed asynchronously but dispatched to a serial que
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
         {
             BSConcurrentManagedObjectContext *context = [BSConcurrentManagedObjectContext alloc] init];
-            NSEntity *entity = [NSEntityDescription insertNewObjectForEntityForName:@"Entity" inManagedObjectContext:context];
+            NSEntity *entity = [NSEntityDescription insertNewObjectForEntityForName:@"Entity" 
+                                                             inManagedObjectContext:context];
         
             [context saveObjectsUsingObjectIDs:[NSArray arrayWithObject:entity.objectID]
                          withCompletionHandler:^(NSError *error) {
