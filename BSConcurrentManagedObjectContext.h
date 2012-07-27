@@ -29,6 +29,6 @@
 - (void)executeAsynchronousFetchRequest:(NSFetchRequest *)request
                   withCompletionHandler:(void (^)(NSArray *fetchedObjects, NSError *error))completionHandler;
 
-- (void)saveObjectsUsingObjectIDs:(NSArray *)objectIDs
-            withCompletionHandler:(void (^)(NSError *error))completionHandler;
+- (void)performBlockOnParentContext:(void (^)(NSManagedObjectContext *parentContext))block;
+
 @end
