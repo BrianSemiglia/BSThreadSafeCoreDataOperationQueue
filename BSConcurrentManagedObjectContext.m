@@ -65,7 +65,7 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
     [self.operationQueue addOperation:blockOperation];
 }
 
-- (void)performBlockOnParentContext:(void (^)(NSManagedObjectContext *parentContext))block
+- (void)performAsynchronousBlockOnParentContext:(void (^)(NSManagedObjectContext *parentContext))block
 {
     NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:^
     {

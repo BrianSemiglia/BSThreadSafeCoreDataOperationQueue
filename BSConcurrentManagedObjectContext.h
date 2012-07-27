@@ -26,10 +26,10 @@
 @property (nonatomic, retain) NSManagedObjectContext *parentContext;
 @property (nonatomic, retain) NSOperationQueue *operationQueue;
 
+- (void)performAsynchronousBlockOnParentContext:(void (^)(NSManagedObjectContext *parentContext))block;
+
 - (void)executeAsynchronousFetchRequest:(NSFetchRequest *)request
                   withCompletionHandler:(void (^)(NSArray *fetchedObjects, NSError *error))completionHandler;
-
-- (void)performBlockOnParentContext:(void (^)(NSManagedObjectContext *parentContext))block;
 
 - (void)saveObjectsUsingObjectIDs:(NSArray *)objectIDs
             withCompletionHandler:(void (^)(NSError *error))completionHandler;
