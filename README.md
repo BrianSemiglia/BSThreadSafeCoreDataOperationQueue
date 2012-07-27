@@ -13,9 +13,9 @@ All saves and fetches are executed asynchronously but dispatched to a serial que
         
         [context performBlockOnParentContext:^(NSManagedObjectContext *parentContext)
         {
-            _Entry *entry = (_Entry*)[NSEntityDescription insertNewObjectForEntityForName:@"Entry" inManagedObjectContext:context];
-            entry.title = [NSString stringWithFormat:@"http://en.wikipedia.org/wiki/List_of_Advanced_Dungeons_Dragons_2nd_edition_monsters"];
-        
+            NSManagedObject *managedObject = [NSEntityDescription insertNewObjectForEntityForName:@"Object" inManagedObjectContext:parentContext];
+            managedObject.attribute = @"attribute";
+            
             NSError *error = nil;
             [context save:&error];
         
