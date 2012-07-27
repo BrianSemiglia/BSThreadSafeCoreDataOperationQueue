@@ -27,7 +27,7 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
 @synthesize managedObjectModel = _managedObjectModel;
 
 - (void)executeAsynchronousFetchRequest:(NSFetchRequest *)request
-                  withCompletionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler
+                  withCompletionHandler:(void (^)(NSArray *fetchedObjects, NSError *error))completionHandler
 {
     dispatch_queue_t returnQueue = dispatch_get_current_queue();
     NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:^
@@ -65,44 +65,13 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
     [self.operationQueue addOperation:blockOperation];
 }
 
-- (void)saveObjectsUsingObjectIDs:(NSArray *)objectIDs
-            withCompletionHandler:(void(^)(NSError *error))completionHandler
+- (void)performBlockOnParentContext:(void (^)(NSManagedObjectContext *parentContext))block
 {
-    dispatch_queue_t returnQueue = dispatch_get_current_queue();
-    NSArray *objectIDsCopy = [[objectIDs copy] autorelease];
-    
-    NSError *error = nil;
-    [self save:&error];
-    
-    if (error) {
-        dispatch_async(returnQueue, ^{
-            completionHandler(error);
-        });
-        dispatch_release(returnQueue);
-        return;
-    }
-    
     NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:^
     {
-        if (self.shouldNotifyOtherContexts)
-            for (NSManagedObjectID *objectID in objectIDsCopy)
-                [[self.parentContext objectWithID:objectID] willAccessValueForKey:nil];
-
-        [self.parentContext mergeChangesFromContextDidSaveNotification:[NSNotification notificationWithName:@"" object:objectIDs]];
-        
-        if (self.shouldNotifyOtherContexts) {
-            // Self notifies all other child contexts of change but removes itself as a listener b/c self has already been updated for the changes
-            self.shouldListenForOtherContextChanges = NO;
-            [[NSNotificationCenter defaultCenter] postNotificationName:contextDidSaveNotification object:objectIDsCopy];
-            self.shouldListenForOtherContextChanges = YES;
-        }
-        
-        dispatch_async(returnQueue, ^{
-            completionHandler(error);
-        });
+        block(self.parentContext);
     }];
-    
-    dispatch_release(returnQueue);
+
     blockOperation.threadPriority = 0;
     [self.operationQueue addOperation:blockOperation];
 }
@@ -111,6 +80,19 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
 {
     if (self.shouldListenForOtherContextChanges)
         [self mergeChangesFromContextDidSaveNotification:notification];
+}
+
+- (void)setShouldListenForOtherContextChanges:(BOOL)shouldListenForOtherContextChanges
+{
+    if (shouldListenForOtherContextChanges == YES)
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(contextDidSaveWithNotification:)
+                                                     name:contextDidSaveNotification
+                                                   object:nil];
+    else
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:contextDidSaveNotification
+                                                      object:nil];
 }
 
 #pragma mark - Custom Synthesizers
@@ -147,19 +129,6 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
     staticOperationQueue.maxConcurrentOperationCount = 1;
 
     return staticOperationQueue;
-}
-
-- (void)setShouldListenForOtherContextChanges:(BOOL)shouldListenForOtherContextChanges
-{
-    if (shouldListenForOtherContextChanges == YES)
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(contextDidSaveWithNotification:)
-                                                     name:contextDidSaveNotification
-                                                   object:nil];
-    else
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:contextDidSaveNotification
-                                                      object:nil];
 }
 
 #pragma mark - Initializers
