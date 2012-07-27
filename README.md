@@ -15,7 +15,7 @@ All saves and fetches are executed asynchronously but dispatched to a serial que
             BSConcurrentManagedObjectContext *context = [BSConcurrentManagedObjectContext alloc] init];
             NSEntity *entity = [NSEntityDescription insertNewObjectForEntityForName:@"Entity" inManagedObjectContext:context];
         
-            [context saveObjectsUsingObjectIDs:[NSArray arrayWithObject:entry.objectID]
+            [context saveObjectsUsingObjectIDs:[NSArray arrayWithObject:entity.objectID]
                                  withCompletionHandler:^(NSError *error) {
                                     if (error)
                                         NSLog(@"%@" error);
