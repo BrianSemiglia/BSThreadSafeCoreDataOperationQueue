@@ -67,7 +67,7 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
             withCompletionHandler:(void (^)(NSError *error))completionHandler
 {
     dispatch_queue_t returnQueue = dispatch_get_current_queue();
-    NSArray *objectIDsCopy = [objectIDs copy];
+    NSArray *objectIDsCopy = [[objectIDs copy] autorelease];
     
     NSError *error = nil;
     [self save:&error];
@@ -82,10 +82,9 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
     
     NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:^
     {
-        if (self.shouldNotifyOtherContexts) {
+        if (self.shouldNotifyOtherContexts)
             for (NSManagedObjectID *objectID in objectIDsCopy)
                 [[self.parentContext objectWithID:objectID] willAccessValueForKey:nil];
-        }
 
         [self.parentContext mergeChangesFromContextDidSaveNotification:[NSNotification notificationWithName:@"" object:objectIDs]];
         
