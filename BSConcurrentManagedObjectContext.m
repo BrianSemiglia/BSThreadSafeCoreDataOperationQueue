@@ -13,7 +13,6 @@ static NSManagedObjectContext *staticParentContext;
 static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
 
 @interface BSConcurrentManagedObjectContext ()
-@property (nonatomic, retain) NSOperationQueue *operationQueue;
 @property (nonatomic, retain) NSPersistentStoreCoordinator *storeCoordinator;
 @property (nonatomic, retain) NSManagedObjectModel *managedObjectModel;
 @end
@@ -28,7 +27,7 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
 @synthesize managedObjectModel = _managedObjectModel;
 
 - (void)executeAsynchronousFetchRequest:(NSFetchRequest *)request
-                  withCompletionHandler:(void (^)(NSArray *fetchedObjects, NSError *error))completionHandler
+                  withCompletionHandler:(void(^)(NSArray *fetchedObjects, NSError *error))completionHandler
 {
     dispatch_queue_t returnQueue = dispatch_get_current_queue();
     NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:^
@@ -67,7 +66,7 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
 }
 
 - (void)saveObjectsUsingObjectIDs:(NSArray *)objectIDs
-            withCompletionHandler:(void (^)(NSError *error))completionHandler
+            withCompletionHandler:(void(^)(NSError *error))completionHandler
 {
     dispatch_queue_t returnQueue = dispatch_get_current_queue();
     NSArray *objectIDsCopy = [[objectIDs copy] autorelease];
@@ -192,6 +191,8 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:contextDidSaveNotification
                                                   object:nil];
+    [_managedObjectModel release];
+    [_storeCoordinator release];
     [_operationQueue release];
     [_parentContext release];
     [super dealloc];
