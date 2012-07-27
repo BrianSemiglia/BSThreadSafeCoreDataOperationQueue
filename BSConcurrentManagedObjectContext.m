@@ -20,9 +20,12 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
 
 @implementation BSConcurrentManagedObjectContext
 
-@synthesize parentContext = _parentContext;
-@synthesize shouldListenForOtherContextChanges = _shouldListenForOtherContextChanges;
 @synthesize shouldNotifyOtherContexts = _shouldNotifyOtherContexts;
+@synthesize shouldListenForOtherContextChanges = _shouldListenForOtherContextChanges;
+@synthesize parentContext = _parentContext;
+@synthesize operationQueue = _operationQueue;
+@synthesize storeCoordinator = _storeCoordinator;
+@synthesize managedObjectModel = _managedObjectModel;
 
 - (void)executeAsynchronousFetchRequest:(NSFetchRequest *)request
                   withCompletionHandler:(void (^)(NSArray *fetchedObjects, NSError *error))completionHandler
