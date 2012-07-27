@@ -31,4 +31,7 @@
 
 - (void)performBlockOnParentContext:(void (^)(NSManagedObjectContext *parentContext))block;
 
+- (void)saveObjectsUsingObjectIDs:(NSArray *)objectIDs
+            withCompletionHandler:(void (^)(NSError *error))completionHandler;
+
 @end
