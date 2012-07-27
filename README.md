@@ -41,7 +41,9 @@ All saves and fetches are executed asynchronously but dispatched to a serial que
                            }];
         [context release];
     }
-    
+
+#BSConcurrentFetchedResultsController
+
     - (void)sampleBSConcurrentFetchedResultsControllerFetch
     {
         BSConcurrentManagedObjectContext *context = [[BSConcurrentManagedObjectContext alloc] init];
