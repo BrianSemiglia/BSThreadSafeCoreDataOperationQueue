@@ -43,6 +43,8 @@ All saves and fetches are executed asynchronously but dispatched to a serial que
     }
 
 #BSConcurrentFetchedResultsController
+Still needs some work...
+- - -
 
     - (void)sampleBSConcurrentFetchedResultsControllerFetch
     {
