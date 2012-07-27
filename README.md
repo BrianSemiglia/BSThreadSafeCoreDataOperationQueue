@@ -9,19 +9,20 @@ All saves and fetches are executed asynchronously but dispatched to a serial que
 
     - (void)sampleSave
     {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^
-        {
-            BSConcurrentManagedObjectContext *context = [BSConcurrentManagedObjectContext alloc] init];
-            NSManagedObject *managedObject = [NSEntityDescription insertNewObjectForEntityForName:@"Entity"
-                                                                           inManagedObjectContext:context];
+        BSConcurrentManagedObjectContext *context = [[BSConcurrentManagedObjectContext alloc] init];
         
-            [context saveObjectsUsingObjectIDs:[NSArray arrayWithObject:managedObject.objectID]
-                         withCompletionHandler:^(NSError *error) {
-                            if (error)
-                                NSLog(@"%@" error);
-                         }];
-            [context release];
-        }
+        [context performBlockOnParentContext:^(NSManagedObjectContext *parentContext)
+        {
+            _Entry *entry = (_Entry*)[NSEntityDescription insertNewObjectForEntityForName:@"Entry" inManagedObjectContext:context];
+            entry.title = [NSString stringWithFormat:@"http://en.wikipedia.org/wiki/List_of_Advanced_Dungeons_Dragons_2nd_edition_monsters"];
+        
+            NSError *error = nil;
+            [context save:&error];
+        
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"contextDidSaveNotification" object:objectIDs];
+        }];
+    
+        [context release];
     }
     
     - (void)sampleFetch
