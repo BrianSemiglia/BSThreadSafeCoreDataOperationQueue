@@ -44,31 +44,3 @@ All saves and fetches are executed asynchronously but dispatched to a serial que
                            }];
         [context release];
     }
-
-#BSConcurrentFetchedResultsController
-Still needs some work...
-
-    - (void)sampleBSConcurrentFetchedResultsControllerFetch
-    {
-        BSConcurrentManagedObjectContext *context = [[BSConcurrentManagedObjectContext alloc] init];
-    
-        NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Entry" inManagedObjectContext:context];
-        fetchRequest.entity = entity;
-    
-        NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"title" ascending:NO] autorelease];
-        fetchRequest.sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
-    
-        fetchedResultsController = [[BSConcurrentFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                                                 managedObjectContext:context
-                                                                                   sectionNameKeyPath:nil
-                                                                                            cacheName:nil];
-        fetchedResultsController.delegate = self;
-        
-        [fetchedResultsController performAsynchronousFetchWithCompletionHandler:^(NSError *error) {
-            if (error)
-                NSLog(@"%@", error);
-        }];
-        
-        [context release];
-    }
