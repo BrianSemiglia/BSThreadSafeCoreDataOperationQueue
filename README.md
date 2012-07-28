@@ -14,12 +14,12 @@ All saves and fetches are executed asynchronously but dispatched to a serial que
         [context performBlockOnParentContext:^(NSManagedObjectContext *parentContext)
         {
             NSManagedObject *managedObject = [NSEntityDescription insertNewObjectForEntityForName:@"Object" inManagedObjectContext:parentContext];
-            managedObject.attribute = @"attribute";
             
             NSError *error = nil;
             [context save:&error];
         
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"contextDidSaveNotification" object:objectIDs];
+            // Object passed can be single ObjectID or an array of ObjectIDs
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"contextDidSaveNotification" object:managedObject.objectID];
         }];
     
         [context release];
