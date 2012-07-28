@@ -13,13 +13,15 @@ All saves and fetches are executed asynchronously but dispatched to a serial que
         
         [context performBlockOnParentContext:^(NSManagedObjectContext *parentContext)
         {
-            NSManagedObject *managedObject = [NSEntityDescription insertNewObjectForEntityForName:@"Object" inManagedObjectContext:parentContext];
+            NSManagedObject *entity = [NSEntityDescription insertNewObjectForEntityForName:@"Entity" 
+                                                                    inManagedObjectContext:parentContext];
             
             NSError *error = nil;
             [context save:&error];
         
             // Object passed can be single ObjectID or an array of ObjectIDs
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"contextDidSaveNotification" object:managedObject.objectID];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"contextDidSaveNotification" 
+                                                                object:entity.objectID];
         }];
     
         [context release];
@@ -30,7 +32,8 @@ All saves and fetches are executed asynchronously but dispatched to a serial que
         BSConcurrentManagedObjectContext *context = [[BSConcurrentManagedObjectContext alloc] init];
 
         NSFetchRequest *request = [[NSFetchRequest alloc] init];
-        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Entry" inManagedObjectContext:context];    
+        NSManagedObject *entity = [NSEntityDescription entityForName:@"Entity" 
+                                              inManagedObjectContext:context];    
         request.entity = entity;
         
         // Completion handler will run on thread that this method is called from.
