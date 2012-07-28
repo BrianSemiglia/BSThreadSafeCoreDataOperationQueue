@@ -31,12 +31,4 @@
 - (void)executeAsynchronousFetchRequest:(NSFetchRequest *)request
                   withCompletionHandler:(void (^)(NSArray *fetchedObjects, NSError *error))completionHandler;
 
-- (void)saveObjectsUsingObjectIDs:(NSArray *)objectIDs
-            withCompletionHandler:(void (^)(NSError *error))completionHandler;
-
-- (void)insertNewObjectForEntityForName:(NSString *)entityName
-                  withCompletionHandler:(void (^) (NSManagedObject *managedObject))completionHandler;
-
-- (void)saveWithCompletionHandler:(void (^)(NSError *error))completionHandler;
-
 @end
