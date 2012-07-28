@@ -59,10 +59,10 @@ Still needs some work...
         NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"title" ascending:NO] autorelease];
         fetchRequest.sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
     
-        fetchedResultsController = [[BSConcurrentFetchedResultsController alloc] initWithAsynchronousFetchRequest:fetchRequest
-                                                                                             managedObjectContext:context
-                                                                                               sectionNameKeyPath:nil
-                                                                                                        cacheName:nil];
+        fetchedResultsController = [[BSConcurrentFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                                                 managedObjectContext:context
+                                                                                   sectionNameKeyPath:nil
+                                                                                            cacheName:nil];
         fetchedResultsController.delegate = self;
         
         [fetchedResultsController performAsynchronousFetchWithCompletionHandler:^(NSError *error) {
