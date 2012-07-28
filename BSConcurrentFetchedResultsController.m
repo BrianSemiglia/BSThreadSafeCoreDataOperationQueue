@@ -33,10 +33,10 @@
         
         NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:^
         {
-            self.fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                                                managedObjectContext:self.context.parentContext
-                                                                                  sectionNameKeyPath:sectionNameKeyPath
-                                                                                           cacheName:name];
+            self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
+                                                                                 managedObjectContext:self.context.parentContext
+                                                                                   sectionNameKeyPath:sectionNameKeyPath
+                                                                                            cacheName:name] autorelease];
             self.fetchedResultsController.delegate = self;
         }];
         
@@ -57,6 +57,11 @@
     
     blockOperation.threadPriority = 0;
     [self.context.operationQueue addOperation:blockOperation];
+}
+
+- (NSArray *)fetchedObjects
+{
+    return self.fetchedResultsController.fetchedObjects;
 }
 
 - (void)controller:(NSFetchedResultsController *)controller
