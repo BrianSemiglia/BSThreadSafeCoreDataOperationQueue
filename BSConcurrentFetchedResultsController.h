@@ -12,11 +12,6 @@
 
 @interface BSConcurrentFetchedResultsController : NSFetchedResultsController <NSFetchedResultsControllerDelegate>
 
-- (id)initWithAsynchronousFetchRequest:(NSFetchRequest *)fetchRequest
-                  managedObjectContext:(NSManagedObjectContext *)context
-                    sectionNameKeyPath:(NSString *)sectionNameKeyPath
-                             cacheName:(NSString *)name;
-
 - (void)performAsynchronousFetchWithCompletionHandler:(void(^)(NSError *error))completionHandler;
 
 @end

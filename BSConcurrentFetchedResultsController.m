@@ -10,17 +10,17 @@
 #import "BSConcurrentManagedObjectContext.h"
 
 @interface BSConcurrentFetchedResultsController ()
-@property (nonatomic, retain) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic, retain) NSFetchedResultsController *parentFetchedResultsController;
 @property (nonatomic, retain) BSConcurrentManagedObjectContext *context;
 @property dispatch_queue_t returnQueue;
 @end
 
 @implementation BSConcurrentFetchedResultsController
 
-- (id)initWithAsynchronousFetchRequest:(NSFetchRequest *)fetchRequest
-                  managedObjectContext:(NSManagedObjectContext *)context
-                    sectionNameKeyPath:(NSString *)sectionNameKeyPath
-                             cacheName:(NSString *)name
+- (id)initWithFetchRequest:(NSFetchRequest *)fetchRequest
+      managedObjectContext:(NSManagedObjectContext *)context
+        sectionNameKeyPath:(NSString *)sectionNameKeyPath
+                 cacheName:(NSString *)name
 {
     self = [super initWithFetchRequest:fetchRequest
                   managedObjectContext:(NSManagedObjectContext *)context
@@ -30,20 +30,21 @@
     {
         self.returnQueue = dispatch_get_current_queue();
         self.context = (BSConcurrentManagedObjectContext *)context;
-        
-        NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:^
-        {
-            self.fetchedResultsController = [[[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                                                 managedObjectContext:self.context.parentContext
-                                                                                   sectionNameKeyPath:sectionNameKeyPath
-                                                                                            cacheName:name] autorelease];
-            self.fetchedResultsController.delegate = self;
-        }];
-        
-        blockOperation.threadPriority = 0;
-        [self.context.operationQueue addOperations:[NSArray arrayWithObject:blockOperation] waitUntilFinished:YES];
     }
     return self;
+}
+
+- (NSFetchedResultsController *)parentFetchedResultsController
+{
+    if (_parentFetchedResultsController)
+        return _parentFetchedResultsController;
+    
+    _parentFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:self.fetchRequest
+                                                                           managedObjectContext:self.context.parentContext
+                                                                             sectionNameKeyPath:self.sectionNameKeyPath
+                                                                                      cacheName:self.cacheName];
+    _parentFetchedResultsController.delegate = self;
+    return _parentFetchedResultsController;
 }
 
 - (void)performAsynchronousFetchWithCompletionHandler:(void(^)(NSError *error))completionHandler
@@ -51,7 +52,7 @@
     NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:^
     {
         NSError *error = nil;
-        [self.fetchedResultsController performFetch:&error];
+        [self.parentFetchedResultsController performFetch:&error];
         completionHandler(error);
     }];
     
@@ -61,7 +62,7 @@
 
 - (NSArray *)fetchedObjects
 {
-    return self.fetchedResultsController.fetchedObjects;
+    return self.parentFetchedResultsController.fetchedObjects;
 }
 
 - (void)controller:(NSFetchedResultsController *)controller

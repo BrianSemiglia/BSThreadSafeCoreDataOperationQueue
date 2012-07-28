@@ -83,11 +83,6 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
 
 #pragma mark - Custom Synthesizers
 
-- (void)createParentContext
-{
-    [self parentContext];
-}
-
 - (NSManagedObjectContext *)parentContext
 {    
     // A static parent context is created upon first call.
@@ -129,9 +124,10 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
         self.shouldListenForOtherContextChanges = YES;
         self.shouldNotifyOtherContexts = YES;
         
-        // Parent context must be created on the thread it will run on.
-        NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:^{ [self createParentContext]; }];
-        [self.operationQueue addOperations:[NSArray arrayWithObject:blockOperation] waitUntilFinished:YES];        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(contextDidSaveWithNotification:)
+                                                     name:contextDidSaveNotification
+                                                   object:nil];
     }
     return self;
 }
