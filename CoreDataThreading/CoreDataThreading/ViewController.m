@@ -11,15 +11,13 @@
 #import <CoreData/CoreData.h>
 #import "Entity.h"
 #import "BSConcurrentManagedObjectContext.h"
-#import "BSConcurrentFetchedResultsController.h"
 
 @interface ViewController ()
-@property (nonatomic, strong) BSConcurrentFetchedResultsController *fetchedResultsController;
 @end
 
 @implementation ViewController
 
-- (IBAction)saveTenThousandItems:(id)sender
+- (IBAction)save:(id)sender
 {
     [self.saveSpinner startAnimating];
     BSConcurrentManagedObjectContext *context = [[BSConcurrentManagedObjectContext alloc] init];
@@ -50,19 +48,7 @@
     [context release];
 }
 
-- (IBAction)fetchedResultsControllerFetch:(id)sender
-{
-    [self.downloadSpinner startAnimating];
-    [self.fetchedResultsController performAsynchronousFetchWithCompletionHandler:^(NSError *error)
-    {
-        NSLog(@"FRC: %i",  self.fetchedResultsController.fetchedObjects.count);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.downloadSpinner stopAnimating];
-        });
-    }];
-}
-
-- (IBAction)contextFetch:(id)sender
+- (IBAction)fetch:(id)sender
 {
     [self.fetchSpinner startAnimating];
     BSConcurrentManagedObjectContext *context = [[BSConcurrentManagedObjectContext alloc] init];
@@ -82,41 +68,9 @@
     [context release];
 }
 
-- (BSConcurrentFetchedResultsController *)fetchedResultsController
-{    
-    if (_fetchedResultsController != nil)
-        return _fetchedResultsController;
-    
-    BSConcurrentManagedObjectContext *context = [[BSConcurrentManagedObjectContext alloc] init];
-    
-    NSFetchRequest *fetchRequest = [[[NSFetchRequest alloc] init] autorelease];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Entity"
-                                              inManagedObjectContext:context];
-    [fetchRequest setEntity:entity];
-    
-    NSSortDescriptor *sort = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:NO];
-    [fetchRequest setSortDescriptors:[NSArray arrayWithObject:sort]];
-    [sort release];
-    
-    _fetchedResultsController = [[BSConcurrentFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                                              managedObjectContext:context
-                                                                                sectionNameKeyPath:nil
-                                                                                         cacheName:nil];
-    _fetchedResultsController.delegate = self;
-    [context release];
-    
-    return _fetchedResultsController;
-}
-
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
     
-}
-
-- (void)dealloc
-{
-    [_fetchedResultsController release];
-    [super dealloc];
 }
 
 @end

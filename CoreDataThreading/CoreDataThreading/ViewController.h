@@ -13,8 +13,7 @@
 
 @property (nonatomic, retain) IBOutlet UIActivityIndicatorView *fetchSpinner, *saveSpinner, *downloadSpinner;
 
-- (IBAction)contextFetch:(id)sender;
-- (IBAction)fetchedResultsControllerFetch:(id)sender;
-- (IBAction)saveTenThousandItems:(id)sender;
+- (IBAction)fetch:(id)sender;
+- (IBAction)save:(id)sender;
 
 @end

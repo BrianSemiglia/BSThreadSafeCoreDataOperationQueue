@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		D308752715C195C100E7E50F /* BSConcurrentManagedObjectContext.m in Sources */ = {isa = PBXBuildFile; fileRef = D308752515C195C100E7E50F /* BSConcurrentManagedObjectContext.m */; };
-		D3266E3A15C30F4A004A8088 /* BSConcurrentFetchedResultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = D3266E3815C30F4A004A8088 /* BSConcurrentFetchedResultsController.m */; };
 		D3889BF115B8AD4700DAD318 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3889BF015B8AD4700DAD318 /* UIKit.framework */; };
 		D3889BF315B8AD4700DAD318 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3889BF215B8AD4700DAD318 /* Foundation.framework */; };
 		D3889BF515B8AD4700DAD318 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3889BF415B8AD4700DAD318 /* CoreGraphics.framework */; };
@@ -25,8 +24,6 @@
 /* Begin PBXFileReference section */
 		D308752515C195C100E7E50F /* BSConcurrentManagedObjectContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BSConcurrentManagedObjectContext.m; path = ../../BSConcurrentManagedObjectContext.m; sourceTree = "<group>"; };
 		D308752615C195C100E7E50F /* BSConcurrentManagedObjectContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BSConcurrentManagedObjectContext.h; path = ../../BSConcurrentManagedObjectContext.h; sourceTree = "<group>"; };
-		D3266E3815C30F4A004A8088 /* BSConcurrentFetchedResultsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BSConcurrentFetchedResultsController.m; path = ../../BSConcurrentFetchedResultsController.m; sourceTree = "<group>"; };
-		D3266E3915C30F4A004A8088 /* BSConcurrentFetchedResultsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BSConcurrentFetchedResultsController.h; path = ../../BSConcurrentFetchedResultsController.h; sourceTree = "<group>"; };
 		D3889BEC15B8AD4700DAD318 /* CoreDataThreading.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoreDataThreading.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3889BF015B8AD4700DAD318 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D3889BF215B8AD4700DAD318 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -102,8 +99,6 @@
 				D3FF1FEE15C46CE80042CAF5 /* Entity.m */,
 				D308752615C195C100E7E50F /* BSConcurrentManagedObjectContext.h */,
 				D308752515C195C100E7E50F /* BSConcurrentManagedObjectContext.m */,
-				D3266E3915C30F4A004A8088 /* BSConcurrentFetchedResultsController.h */,
-				D3266E3815C30F4A004A8088 /* BSConcurrentFetchedResultsController.m */,
 				D3889BF715B8AD4700DAD318 /* Supporting Files */,
 			);
 			path = CoreDataThreading;
@@ -188,7 +183,6 @@
 				D3889C0415B8AD4700DAD318 /* ViewController.m in Sources */,
 				D3889C0F15B8B0F700DAD318 /* Model.xcdatamodeld in Sources */,
 				D308752715C195C100E7E50F /* BSConcurrentManagedObjectContext.m in Sources */,
-				D3266E3A15C30F4A004A8088 /* BSConcurrentFetchedResultsController.m in Sources */,
 				D3FF1FEF15C46CE80042CAF5 /* Entity.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
