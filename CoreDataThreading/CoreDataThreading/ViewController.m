@@ -33,7 +33,7 @@
          {
              Entity *entity = (Entity *)[NSEntityDescription insertNewObjectForEntityForName:@"Entity"
                                                                       inManagedObjectContext:parentContext];
-             entity.title = [NSString stringWithFormat:@"title"];
+             entity.title = [NSString stringWithFormat:@"%i", i];
              [objectIDs addObject:entity.objectID];
          }
          
@@ -58,15 +58,17 @@
     
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Entity" inManagedObjectContext:self.context];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title == 999 || title == 666"];
+    NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES] autorelease];
+
     request.entity = entity;
+    request.predicate = predicate;
+    request.sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
     
     [self.context executeAsynchronousFetchRequest:request
                             withCompletionHandler:^(NSArray *fetchedObjects, NSError *error){
-                                dispatch_async(dispatch_get_main_queue(), ^
-                                               {
-                                                   NSLog(@"Fetched %i items.", fetchedObjects.count);
-                                                   [self.fetchSpinner stopAnimating];
-                                               });
+                                NSLog(@"Fetched %i items", fetchedObjects.count);
+                                [self.fetchSpinner stopAnimating];
                             }];
     
     [request release];

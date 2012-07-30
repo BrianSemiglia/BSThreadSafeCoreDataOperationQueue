@@ -29,41 +29,41 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
 {
     dispatch_queue_t returnQueue = dispatch_get_current_queue();
     NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:^
-                                        {
-                                            request.includesPropertyValues = NO;
-                                            request.includesSubentities = NO;
-                                            request.resultType = NSManagedObjectIDResultType;
-                                            
-                                            NSError *error = nil;
-                                            NSArray *fetchedObjectIDs = [self.parentContext executeFetchRequest:request
-                                                                                                          error:&error];
-                                            
-                                            if (error) {
-                                                dispatch_async(returnQueue, ^{
-                                                    completionHandler(nil, error);
-                                                });
-                                                dispatch_release(returnQueue);
-                                                return;
-                                            }
-                                            
-                                            NSMutableArray *objectIDs = [[NSMutableArray alloc] initWithCapacity:fetchedObjectIDs.count];
-                                            for (NSManagedObject *objectID in fetchedObjectIDs) {
-                                                [objectIDs addObject:objectID];
-                                            }
-                                            
-                                            dispatch_async(returnQueue, ^
-                                                           {
-                                                               NSMutableArray *results = [[NSMutableArray alloc] initWithCapacity:fetchedObjectIDs.count];
-                                                               for (NSManagedObjectID *objectID in objectIDs) {
-                                                                   [results addObject:[self objectWithID:objectID]];
-                                                               }
-                                                               
-                                                               completionHandler(results, error);
-                                                               [results release];
-                                                           });
-                                            
-                                            [objectIDs release];
-                                        }];
+    {
+        request.includesPropertyValues = NO;
+        request.includesSubentities = NO;
+        request.resultType = NSManagedObjectIDResultType;
+        
+        NSError *error = nil;
+        NSArray *fetchedObjectIDs = [self.parentContext executeFetchRequest:request
+                                                                      error:&error];
+        
+        if (error) {
+            dispatch_async(returnQueue, ^{
+                completionHandler(nil, error);
+            });
+            dispatch_release(returnQueue);
+            return;
+        }
+        
+        NSMutableArray *objectIDs = [[NSMutableArray alloc] initWithCapacity:fetchedObjectIDs.count];
+        for (NSManagedObject *objectID in fetchedObjectIDs) {
+            [objectIDs addObject:objectID];
+        }
+        
+        dispatch_async(returnQueue, ^
+        {
+            NSMutableArray *results = [[NSMutableArray alloc] initWithCapacity:fetchedObjectIDs.count];
+            for (NSManagedObjectID *objectID in objectIDs) {
+                [results addObject:[self objectWithID:objectID]];
+            }
+           
+            completionHandler(results, error);
+            [results release];
+        });
+        
+        [objectIDs release];
+    }];
     dispatch_release(returnQueue);
     
     blockOperation.threadPriority = 0;
@@ -73,9 +73,9 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
 - (void)performAsynchronousBlockOnParentContext:(void (^)(NSManagedObjectContext *parentContext))block
 {
     NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:^
-                                        {
-                                            block(self.parentContext);
-                                        }];
+    {
+        block(self.parentContext);
+    }];
     
     blockOperation.threadPriority = 0;
     [self.operationQueue addOperation:blockOperation];
