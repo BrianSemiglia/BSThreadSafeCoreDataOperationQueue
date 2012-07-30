@@ -39,7 +39,7 @@ All saves and fetches are executed asynchronously but dispatched to a serial que
         // Completion handler will run on thread that this method is called from.
         // Make sure to call this method on the same thread that the context was created on.
         [context executeAsynchronousFetchRequest:request
-                            withCompletionHandler:^(NSArray *fetchedObjects, NSError *error) {
+                           withCompletionHandler:^(NSArray *fetchedObjects, NSError *error) {
                                 NSLog(@"%@", fetchedObjects);
                            }];
         [context release];
