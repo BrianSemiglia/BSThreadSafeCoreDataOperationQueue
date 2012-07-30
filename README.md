@@ -17,7 +17,7 @@ All saves and fetches are executed asynchronously but dispatched to a serial que
                                                                     inManagedObjectContext:parentContext];
             
             NSError *error = nil;
-            [context save:&error];
+            [parentContext save:&error];
         
             // Object passed can be single ObjectID or an array of ObjectIDs
             [[NSNotificationCenter defaultCenter] postNotificationName:@"contextDidSaveNotification" 
