@@ -56,20 +56,28 @@
 {
     [self.fetchSpinner startAnimating];
     
+    // Required parameters
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Entity" inManagedObjectContext:self.context];
+    request.entity = entity;
+    
+    // Optional parameters
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"title == 999 || title == 666"];
     NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES] autorelease];
-
-    request.entity = entity;
     request.predicate = predicate;
     request.sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
     
     [self.context executeAsynchronousFetchRequest:request
-                            withCompletionHandler:^(NSArray *fetchedObjects, NSError *error){
-                                NSLog(@"Fetched %i items", fetchedObjects.count);
-                                [self.fetchSpinner stopAnimating];
-                            }];
+                            withCompletionHandler:^(NSArray *fetchedObjects, NSError *error)
+    {
+        NSLog(@"Fetched %i items", fetchedObjects.count);
+        
+        Entity *entity = [fetchedObjects objectAtIndex:0];
+        if (entity.isFault)
+            NSLog(@"Entity is faulted!");
+
+        [self.fetchSpinner stopAnimating];
+    }];
     
     [request release];
 }

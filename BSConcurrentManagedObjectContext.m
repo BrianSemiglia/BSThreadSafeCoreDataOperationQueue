@@ -54,8 +54,13 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
         dispatch_async(returnQueue, ^
         {
             NSMutableArray *results = [[NSMutableArray alloc] initWithCapacity:fetchedObjectIDs.count];
-            for (NSManagedObjectID *objectID in objectIDs) {
-                [results addObject:[self objectWithID:objectID]];
+            for (NSManagedObjectID *objectID in objectIDs)
+            {
+                NSError *error = nil;
+                NSManagedObject *object = [self existingObjectWithID:objectID error:&error];
+                
+                if (!error)
+                    [results addObject:object];
             }
            
             completionHandler(results, error);
