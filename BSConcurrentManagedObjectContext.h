@@ -21,7 +21,6 @@
 
 @interface BSConcurrentManagedObjectContext : NSManagedObjectContext
 
-@property (nonatomic, assign) BOOL shouldNotifyOtherContexts;
 @property (nonatomic, assign) BOOL shouldListenForOtherContextChanges;
 @property (nonatomic, retain) NSManagedObjectContext *parentContext;
 @property (nonatomic, retain) NSOperationQueue *operationQueue;

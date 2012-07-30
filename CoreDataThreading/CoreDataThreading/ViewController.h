@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
 
-@interface ViewController : UIViewController <NSFetchedResultsControllerDelegate>
+@interface ViewController : UIViewController
 
-@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *fetchSpinner, *saveSpinner, *downloadSpinner;
+@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *fetchSpinner, *saveSpinner;
 
 - (IBAction)fetch:(id)sender;
 - (IBAction)save:(id)sender;

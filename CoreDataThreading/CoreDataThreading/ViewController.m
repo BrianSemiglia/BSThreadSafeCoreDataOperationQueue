@@ -13,64 +13,72 @@
 #import "BSConcurrentManagedObjectContext.h"
 
 @interface ViewController ()
+@property (nonatomic, strong) BSConcurrentManagedObjectContext *context;
 @end
 
 @implementation ViewController
 
+@synthesize context = _context;
+@synthesize fetchSpinner = _fetchSpinner;
+@synthesize saveSpinner = _saveSpinner;
+
 - (IBAction)save:(id)sender
 {
     [self.saveSpinner startAnimating];
-    BSConcurrentManagedObjectContext *context = [[BSConcurrentManagedObjectContext alloc] init];
-        
-    [context performAsynchronousBlockOnParentContext:^(NSManagedObjectContext *parentContext)
-    {
-        NSMutableArray *objectIDs = [[[NSMutableArray alloc] initWithCapacity:1000] autorelease];
-        for (int i = 0; i < 1000; i++)
-        {
-            Entity *entity = (Entity *)[NSEntityDescription insertNewObjectForEntityForName:@"Entity"
-                                                                   inManagedObjectContext:context];
-            entity.title = [NSString stringWithFormat:@"title"];
-            [objectIDs addObject:entity.objectID];
-        }
-        
-        NSError *error = nil;
-        [context save:&error];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"contextDidSaveNotification"
-                                                            object:objectIDs];
-        NSLog(@"%@", error ? error : @"Saved 1,000!");
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.saveSpinner stopAnimating];
-        });
-    }];
     
-    [context release];
+    [self.context performAsynchronousBlockOnParentContext:^(NSManagedObjectContext *parentContext)
+     {
+         NSInteger saveCount = 10000;
+         NSMutableArray *objectIDs = [[NSMutableArray alloc] initWithCapacity:saveCount];
+         for (int i = 0; i < saveCount; i++)
+         {
+             Entity *entity = (Entity *)[NSEntityDescription insertNewObjectForEntityForName:@"Entity"
+                                                                      inManagedObjectContext:parentContext];
+             entity.title = [NSString stringWithFormat:@"title"];
+             [objectIDs addObject:entity.objectID];
+         }
+         
+         NSError *error = nil;
+         [parentContext save:&error];
+         
+         [[NSNotificationCenter defaultCenter] postNotificationName:@"contextDidSaveNotification"
+                                                             object:objectIDs];
+         
+         dispatch_async(dispatch_get_main_queue(), ^{
+             [self.saveSpinner stopAnimating];
+             NSLog(@"%@", error ? error : [NSString stringWithFormat:@"Saved %i items.", objectIDs.count]);
+         });
+         
+         [objectIDs release];
+     }];
 }
 
 - (IBAction)fetch:(id)sender
 {
     [self.fetchSpinner startAnimating];
-    BSConcurrentManagedObjectContext *context = [[BSConcurrentManagedObjectContext alloc] init];
     
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Entity" inManagedObjectContext:context];    
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Entity" inManagedObjectContext:self.context];
     request.entity = entity;
     
-    [context executeAsynchronousFetchRequest:request
-                       withCompletionHandler:^(NSArray *fetchedObjects, NSError *error) {
-                           NSLog(@"Context fetch %i ITEMS", fetchedObjects.count);
-                           dispatch_async(dispatch_get_main_queue(), ^{
-                               [self.fetchSpinner stopAnimating];
-                           });
-                       }];
+    [self.context executeAsynchronousFetchRequest:request
+                            withCompletionHandler:^(NSArray *fetchedObjects, NSError *error){
+                                dispatch_async(dispatch_get_main_queue(), ^
+                                               {
+                                                   NSLog(@"Fetched %i items.", fetchedObjects.count);
+                                                   [self.fetchSpinner stopAnimating];
+                                               });
+                            }];
+    
     [request release];
-    [context release];
 }
 
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+- (BSConcurrentManagedObjectContext *)context
 {
+    if (_context)
+        return _context;
     
+    return _context = [[BSConcurrentManagedObjectContext alloc] init];
 }
 
 @end

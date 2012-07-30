@@ -1,6 +1,6 @@
 //
 //  BSConcurrentManagedObjectContext.m
-//  
+//
 //
 //  Created by Brian Semiglia on 7/24/12.
 //  Copyright (c) 2012 Brian Semiglia. All rights reserved.
@@ -29,35 +29,41 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
 {
     dispatch_queue_t returnQueue = dispatch_get_current_queue();
     NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:^
-    {
-        NSError *error = nil;
-        NSArray *fetchedObjects = [self.parentContext executeFetchRequest:request
-                                                                    error:&error];
-        
-        if (error) {
-            dispatch_async(returnQueue, ^{
-                completionHandler(nil, error);
-            });
-            dispatch_release(returnQueue);
-            return;
-        }
-        
-        NSMutableArray *objectIDs = [[NSMutableArray alloc] initWithCapacity:fetchedObjects.count];
-        for (NSManagedObject *object in fetchedObjects) {
-            [objectIDs addObject:object.objectID];
-        }
-        
-        dispatch_async(returnQueue, ^
-        {
-            NSMutableArray *results = [[NSMutableArray alloc] initWithCapacity:fetchedObjects.count];
-            for (NSManagedObjectID *objectID in objectIDs) {
-                [results addObject:[self objectWithID:objectID]];
-            }
-            
-            completionHandler(results, error);
-            [results release];
-        });
-    }];
+                                        {
+                                            request.includesPropertyValues = NO;
+                                            request.includesSubentities = NO;
+                                            request.resultType = NSManagedObjectIDResultType;
+                                            
+                                            NSError *error = nil;
+                                            NSArray *fetchedObjectIDs = [self.parentContext executeFetchRequest:request
+                                                                                                          error:&error];
+                                            
+                                            if (error) {
+                                                dispatch_async(returnQueue, ^{
+                                                    completionHandler(nil, error);
+                                                });
+                                                dispatch_release(returnQueue);
+                                                return;
+                                            }
+                                            
+                                            NSMutableArray *objectIDs = [[NSMutableArray alloc] initWithCapacity:fetchedObjectIDs.count];
+                                            for (NSManagedObject *objectID in fetchedObjectIDs) {
+                                                [objectIDs addObject:objectID];
+                                            }
+                                            
+                                            dispatch_async(returnQueue, ^
+                                                           {
+                                                               NSMutableArray *results = [[NSMutableArray alloc] initWithCapacity:fetchedObjectIDs.count];
+                                                               for (NSManagedObjectID *objectID in objectIDs) {
+                                                                   [results addObject:[self objectWithID:objectID]];
+                                                               }
+                                                               
+                                                               completionHandler(results, error);
+                                                               [results release];
+                                                           });
+                                            
+                                            [objectIDs release];
+                                        }];
     dispatch_release(returnQueue);
     
     blockOperation.threadPriority = 0;
@@ -67,10 +73,10 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
 - (void)performAsynchronousBlockOnParentContext:(void (^)(NSManagedObjectContext *parentContext))block
 {
     NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:^
-    {
-        block(self.parentContext);
-    }];
-
+                                        {
+                                            block(self.parentContext);
+                                        }];
+    
     blockOperation.threadPriority = 0;
     [self.operationQueue addOperation:blockOperation];
 }
@@ -84,7 +90,7 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
 #pragma mark - Custom Synthesizers
 
 - (NSManagedObjectContext *)parentContext
-{    
+{
     // A static parent context is created upon first call.
     // All child contexts save to the parent context.
     // The parent context then saves to disk.
@@ -96,7 +102,7 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
     staticParentContext = [[NSManagedObjectContext alloc] init];
     staticParentContext.persistentStoreCoordinator = self.storeCoordinator;
     staticParentContext.undoManager = self.undoManager;
-        
+    
     return staticParentContext;
 }
 
@@ -108,7 +114,7 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
     
     staticOperationQueue = [[NSOperationQueue alloc] init];
     staticOperationQueue.maxConcurrentOperationCount = 1;
-
+    
     return staticOperationQueue;
 }
 
@@ -122,7 +128,6 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
         self.persistentStoreCoordinator = self.storeCoordinator;
         self.undoManager = nil;
         self.shouldListenForOtherContextChanges = YES;
-        self.shouldNotifyOtherContexts = YES;
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(contextDidSaveWithNotification:)

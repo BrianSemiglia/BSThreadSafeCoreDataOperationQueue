@@ -108,7 +108,7 @@
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<int key="IBUIButtonType">1</int>
-						<string key="IBUINormalTitle">Save 1,000 items</string>
+						<string key="IBUINormalTitle">Save 1,0000 items</string>
 						<reference key="IBUIHighlightedTitleColor" ref="177427564"/>
 						<object class="NSColor" key="IBUINormalTitleColor">
 							<int key="NSColorSpace">1</int>
@@ -142,17 +142,6 @@
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						<int key="IBUIStyle">2</int>
 					</object>
-					<object class="IBUIActivityIndicatorView" id="563575408">
-						<reference key="NSNextResponder" ref="774585933"/>
-						<int key="NSvFlags">-2147483356</int>
-						<string key="NSFrame">{{265, 412}, {20, 20}}</string>
-						<reference key="NSSuperview" ref="774585933"/>
-						<reference key="NSWindow"/>
-						<string key="NSReuseIdentifierKey">_NS:9</string>
-						<bool key="IBUIOpaque">NO</bool>
-						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
-						<int key="IBUIStyle">2</int>
-					</object>
 				</array>
 				<string key="NSFrame">{{0, 20}, {320, 460}}</string>
 				<reference key="NSSuperview"/>
@@ -179,14 +168,6 @@
 						<reference key="destination" ref="774585933"/>
 					</object>
 					<int key="connectionID">7</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBCocoaTouchOutletConnection" key="connection">
-						<string key="label">downloadSpinner</string>
-						<reference key="source" ref="372490531"/>
-						<reference key="destination" ref="563575408"/>
-					</object>
-					<int key="connectionID">28</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchOutletConnection" key="connection">
@@ -251,7 +232,6 @@
 							<reference ref="610927798"/>
 							<reference ref="557545534"/>
 							<reference ref="50692024"/>
-							<reference ref="563575408"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -280,11 +260,6 @@
 						<reference key="object" ref="50692024"/>
 						<reference key="parent" ref="774585933"/>
 					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">27</int>
-						<reference key="object" ref="563575408"/>
-						<reference key="parent" ref="774585933"/>
-					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -297,7 +272,6 @@
 				<string key="21.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="25.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="26.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="27.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="6.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
@@ -314,7 +288,6 @@
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="fetch:">id</string>
 						<string key="save:">id</string>
-						<string key="saveTenThousandItems:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="fetch:">
@@ -323,10 +296,6 @@
 						</object>
 						<object class="IBActionInfo" key="save:">
 							<string key="name">save:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="saveTenThousandItems:">
-							<string key="name">saveTenThousandItems:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 					</dictionary>
