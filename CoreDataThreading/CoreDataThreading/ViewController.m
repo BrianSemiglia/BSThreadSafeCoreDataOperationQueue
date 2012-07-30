@@ -8,7 +8,6 @@
 
 #import "ViewController.h"
 #import "AppDelegate.h"
-#import <CoreData/CoreData.h>
 #import "Entity.h"
 #import "BSConcurrentManagedObjectContext.h"
 
