@@ -29,6 +29,7 @@
      {
          NSInteger saveCount = 10000;
          NSMutableArray *objectIDs = [[NSMutableArray alloc] initWithCapacity:saveCount];
+         
          for (int i = 0; i < saveCount; i++)
          {
              Entity *entity = (Entity *)[NSEntityDescription insertNewObjectForEntityForName:@"Entity"
@@ -71,11 +72,6 @@
                             withCompletionHandler:^(NSArray *fetchedObjects, NSError *error)
     {
         NSLog(@"Fetched %i items", fetchedObjects.count);
-        
-        Entity *entity = [fetchedObjects objectAtIndex:0];
-        if (entity.isFault)
-            NSLog(@"Entity is faulted!");
-
         [self.fetchSpinner stopAnimating];
     }];
     

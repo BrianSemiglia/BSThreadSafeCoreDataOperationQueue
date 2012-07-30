@@ -57,7 +57,8 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
             for (NSManagedObjectID *objectID in objectIDs)
             {
                 NSError *error = nil;
-                NSManagedObject *object = [self existingObjectWithID:objectID error:&error];
+                NSManagedObject *object = [self existingObjectWithID:objectID
+                                                               error:&error];
                 
                 if (!error)
                     [results addObject:object];
