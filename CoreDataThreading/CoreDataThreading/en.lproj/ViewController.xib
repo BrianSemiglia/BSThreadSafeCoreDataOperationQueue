@@ -108,7 +108,7 @@
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<int key="IBUIButtonType">1</int>
-						<string key="IBUINormalTitle">Save 1,0000 items</string>
+						<string key="IBUINormalTitle">Save 10,000 items</string>
 						<reference key="IBUIHighlightedTitleColor" ref="177427564"/>
 						<object class="NSColor" key="IBUINormalTitleColor">
 							<int key="NSColorSpace">1</int>
@@ -136,7 +136,6 @@
 						<string key="NSFrame">{{265, 367}, {20, 20}}</string>
 						<reference key="NSSuperview" ref="774585933"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -300,15 +299,10 @@
 						</object>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="downloadSpinner">UIActivityIndicatorView</string>
 						<string key="fetchSpinner">UIActivityIndicatorView</string>
 						<string key="saveSpinner">UIActivityIndicatorView</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="downloadSpinner">
-							<string key="name">downloadSpinner</string>
-							<string key="candidateClassName">UIActivityIndicatorView</string>
-						</object>
 						<object class="IBToOneOutletInfo" key="fetchSpinner">
 							<string key="name">fetchSpinner</string>
 							<string key="candidateClassName">UIActivityIndicatorView</string>
