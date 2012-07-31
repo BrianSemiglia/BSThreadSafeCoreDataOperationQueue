@@ -68,7 +68,6 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
                 results = nil;
             
             completionHandler(results, error);
-            [results release];
         });
         
         [objectIDs release];
