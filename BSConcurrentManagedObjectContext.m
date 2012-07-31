@@ -60,7 +60,7 @@ static NSString *contextDidSaveNotification = @"contextDidSaveNotification";
                 NSManagedObject *object = [self existingObjectWithID:objectID
                                                                error:&error];
                 
-                if (error)
+                if (!error)
                     [results addObject:object];
             }
 
