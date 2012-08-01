@@ -41,9 +41,6 @@
          NSError *error = nil;
          [parentContext save:&error];
          
-         [[NSNotificationCenter defaultCenter] postNotificationName:@"contextDidSaveNotification"
-                                                             object:objectIDs];
-         
          dispatch_async(dispatch_get_main_queue(), ^{
              [self.saveSpinner stopAnimating];
              NSLog(@"%@", error ? error : [NSString stringWithFormat:@"Saved %i items.", objectIDs.count]);
@@ -70,10 +67,10 @@
     
     [self.context executeAsynchronousFetchRequest:request
                             withCompletionHandler:^(NSArray *fetchedObjects, NSError *error)
-    {
-        NSLog(@"Fetched %i items", fetchedObjects.count);
-        [self.fetchSpinner stopAnimating];
-    }];
+     {
+         NSLog(@"Fetched %i items", fetchedObjects.count);
+         [self.fetchSpinner stopAnimating];
+     }];
     
     [request release];
 }
