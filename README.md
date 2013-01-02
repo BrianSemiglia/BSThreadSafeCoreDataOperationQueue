@@ -28,6 +28,7 @@ Using a proxy context that reflects the state of it's parent context allows that
             NSError *error = nil;
             [parentContext save:&error];
         }
+        // Completion handler will run on thread that this method is called from.
         withCompletionHandler:^
         {
             
@@ -45,10 +46,11 @@ Using a proxy context that reflects the state of it's parent context allows that
         request.entity = entity;
         
         // Completion handler will run on thread that this method is called from.
-        // Make sure to call this method on the same thread that the context was created on.
         [context executeAsynchronousFetchRequest:request
-                           withCompletionHandler:^(NSArray *fetchedObjects, NSError *error) {
-                                NSLog(@"%@", fetchedObjects);
-                           }];
+                           withCompletionHandler:^(NSArray *fetchedObjects, NSError *error) 
+        {
+            NSLog(@"%@", fetchedObjects);
+        }];
+        
         [context release];
     }
