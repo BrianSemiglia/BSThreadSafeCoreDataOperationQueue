@@ -19,13 +19,13 @@
 // ensuring that saves happen in the order that they were submitted. The completion handler is run on the
 // thread that it's method was called on.
 
-@interface BSConcurrentManagedObjectContext : NSManagedObjectContext
+@interface BSThreadSafeManagedObjectContext : NSManagedObjectContext
 
 @property (nonatomic, assign) BOOL shouldListenForOtherContextChanges;
-@property (nonatomic, retain) NSManagedObjectContext *parentContext;
-@property (nonatomic, retain) NSOperationQueue *operationQueue;
+@property (nonatomic, strong) NSManagedObjectContext *parentContext;
 
-- (void)performAsynchronousBlockOnParentContext:(void (^)(NSManagedObjectContext *parentContext))block;
+- (void)performBlockOnParentContextsQueue:(void (^)(NSManagedObjectContext *parentContext))block
+                    withCompletionHandler:(void (^)(void))completionHandler;
 
 - (void)executeAsynchronousFetchRequest:(NSFetchRequest *)request
                   withCompletionHandler:(void (^)(NSArray *fetchedObjects, NSError *error))completionHandler;
