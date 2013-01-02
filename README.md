@@ -16,7 +16,6 @@ handler is run on the thread that it's method was called on.
     - (void)sampleSave
     {
         BSThreadSafeManagedObjectContext *context = [[BSThreadSafeManagedObjectContext alloc] init];
-        
         [context performBlockOnParentContext:^(NSManagedObjectContext *parentContext)
         {
             NSManagedObject *entity = [NSEntityDescription insertNewObjectForEntityForName:@"Entity" 
