@@ -1,6 +1,6 @@
 BSThreadSafeManagedObjectContext
 ==============================
-A custom NSManagedObjectContext for concurrent/asynchronous/threaded saving and fetching with Core Data. iOS 4+
+A custom NSManagedObjectContext for non-blocking, thread-safe operations with Core Data. iOS 4+
 - - -
 BSThreadSafeManagedObjectContext serves as a proxy to it's underlying parent context. 
 The parent context is created on demand the first time a thread-safe managed object context is created and remains a singleton for the remaining session. 
