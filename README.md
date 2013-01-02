@@ -12,6 +12,11 @@ The thread-safe context also has the components for assigning it's perisistentSt
 All saves and fetches are executed asynchronously but dispatched to a serial queue, ensuring that saves happen in the order that they were submitted. The completion
 handler is run on the thread that it's method was called on.
 
+You might ask why you need the proxy context and not just an NSObject that contains a parent context.
+A proxy context allows for the use of a NSFetchedResultsController.
+A context has to be created on the same thread that it's corresponding fetched results controller was created.
+Using a proxy context that reflects the state of it's parent context allows that proxy context to be observed by the fetched results controller.
+
 
     - (void)sampleSave
     {
