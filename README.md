@@ -18,6 +18,10 @@ All saves and fetches are executed asynchronously but dispatched to a serial que
             
             NSError *error = nil;
             [parentContext save:&error];
+        }
+        withCompletionHandler:^
+        {
+            
         }];
     
         [context release];
