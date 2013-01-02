@@ -31,7 +31,7 @@ Using a proxy context that reflects the state of it's parent context allows that
         // Completion handler will run on thread that this method is called from.
         withCompletionHandler:^
         {
-            
+            NSLog(@"Save finished.");
         }];
     
         [context release];
