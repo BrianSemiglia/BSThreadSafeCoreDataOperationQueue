@@ -25,7 +25,7 @@
 {
     [self.saveSpinner startAnimating];
     
-    [self.context performBlockOnParentContextsQueue:^(NSManagedObjectContext *parentContext)
+    [self.context performBlockOnParentContext:^(NSManagedObjectContext *parentContext)
     {
         NSInteger saveCount = 10000;
         NSMutableArray *objectIDs = [[NSMutableArray alloc] initWithCapacity:saveCount];
@@ -47,7 +47,7 @@
         
         [objectIDs release];
     }
-                              withCompletionHandler:^
+                        withCompletionHandler:^
     {
         [self.saveSpinner stopAnimating];
     }];

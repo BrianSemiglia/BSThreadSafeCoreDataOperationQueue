@@ -19,15 +19,19 @@
 // ensuring that saves happen in the order that they were submitted. The completion handler is run on the
 // thread that it's method was called on.
 
+typedef void (^FetchCompletionHandler)(NSArray *fetchedObjects, NSError *error);
+typedef void (^ParentContextOperationBlock)(NSManagedObjectContext *parentContext);
+typedef void (^ParentContextOperationCompletionHandler)(void);
+
 @interface BSThreadSafeManagedObjectContext : NSManagedObjectContext
 
 @property (nonatomic, assign) BOOL shouldListenForOtherContextChanges;
 @property (nonatomic, strong) NSManagedObjectContext *parentContext;
 
-- (void)performBlockOnParentContextsQueue:(void (^)(NSManagedObjectContext *parentContext))block
-                    withCompletionHandler:(void (^)(void))completionHandler;
+- (void)performBlockOnParentContext:(ParentContextOperationBlock)block
+              withCompletionHandler:(ParentContextOperationCompletionHandler)completionHandler;
 
 - (void)executeAsynchronousFetchRequest:(NSFetchRequest *)request
-                  withCompletionHandler:(void (^)(NSArray *fetchedObjects, NSError *error))completionHandler;
+                  withCompletionHandler:(FetchCompletionHandler)completionHandler;
 
 @end

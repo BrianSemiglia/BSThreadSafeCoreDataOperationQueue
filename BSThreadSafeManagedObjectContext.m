@@ -10,9 +10,6 @@
 
 static NSOperationQueue *staticOperationQueue;
 static NSManagedObjectContext *staticParentContext;
-typedef void (^FetchCompletionHandler)(NSArray *fetchedObjects, NSError *error);
-typedef void (^ParentContextOperationBlock)(NSManagedObjectContext *parentContext);
-typedef void (^ParentContextOperationCompletionHandler)(void);
 
 @interface BSThreadSafeManagedObjectContext ()
 @property (nonatomic, assign) BOOL notifyParentContext;
@@ -37,8 +34,10 @@ typedef void (^ParentContextOperationCompletionHandler)(void);
         NSArray *fetchedObjectIDs = [self.parentContext executeFetchRequest:request
                                                                       error:&error];
         
-        if (error) {
-            dispatch_async(returnQueue, ^{
+        if (error)
+        {
+            dispatch_async(returnQueue, ^
+            {
                 completionHandler(nil, error);
             });
             dispatch_release(returnQueue);
@@ -46,7 +45,8 @@ typedef void (^ParentContextOperationCompletionHandler)(void);
         }
         
         NSMutableArray *objectIDs = [[NSMutableArray alloc] initWithCapacity:fetchedObjectIDs.count];
-        for (NSManagedObject *objectID in fetchedObjectIDs) {
+        for (NSManagedObject *objectID in fetchedObjectIDs)
+        {
             [objectIDs addObject:objectID];
         }
         
@@ -78,16 +78,18 @@ typedef void (^ParentContextOperationCompletionHandler)(void);
     [self.operationQueue addOperation:blockOperation];
 }
 
-- (void)performBlockOnParentContextsQueue:(ParentContextOperationBlock)block
-                    withCompletionHandler:(ParentContextOperationCompletionHandler)completionHandler
+- (void)performBlockOnParentContext:(ParentContextOperationBlock)block
+              withCompletionHandler:(ParentContextOperationCompletionHandler)completionHandler
 {
     NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:^ {
         block(self.parentContext);
     }];
     
     dispatch_queue_t returnQueue = dispatch_get_current_queue();
-    blockOperation.completionBlock = ^{
-        dispatch_async(returnQueue, ^{
+    blockOperation.completionBlock = ^
+    {
+        dispatch_async(returnQueue, ^
+        {
             completionHandler();
         });
     };
@@ -216,7 +218,7 @@ typedef void (^ParentContextOperationCompletionHandler)(void);
 
 - (BOOL)save:(NSError **)error
 {
-    NSAssert(@"Error: ", @"Use performBlock:WithCompletionHandler instead");
+    NSAssert(@"Error: ", @"Use performBlockOnParentContext:WithCompletionHandler instead");
     return NO;
 }
 
