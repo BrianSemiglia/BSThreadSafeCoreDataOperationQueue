@@ -21,7 +21,6 @@ handler is run on the thread that it's method was called on.
         {
             NSManagedObject *entity = [NSEntityDescription insertNewObjectForEntityForName:@"Entity" 
                                                                     inManagedObjectContext:parentContext];
-            
             NSError *error = nil;
             [parentContext save:&error];
         }
@@ -36,7 +35,6 @@ handler is run on the thread that it's method was called on.
     - (void)sampleFetch
     {
         BSThreadSafeManagedObjectContext *context = [[BSThreadSafeManagedObjectContext alloc] init];
-
         NSFetchRequest *request = [[NSFetchRequest alloc] init];
         NSManagedObject *entity = [NSEntityDescription entityForName:@"Entity" 
                                               inManagedObjectContext:context];    
