@@ -17,7 +17,7 @@
 // This method allows for simple background saving that is thread safe.
 // This method does not allow for concurrent save operations.
 
-@interface BSThreadSafeContextController : NSOperationQueue
+@interface BSThreadSafeCoreDataController : NSOperationQueue
 
 // Must be atomic. May cause crash if not.
 @property (atomic, strong) NSManagedObjectContext *managedObjectContext;

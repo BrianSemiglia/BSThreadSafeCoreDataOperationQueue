@@ -1,4 +1,4 @@
-BSThreadSafeContextController
+BSThreadSafeCoreDataController
 ==============================
 A custom NSOperationQueue for non-blocking, thread-safe operations with Core Data. iOS 4+
 - - -

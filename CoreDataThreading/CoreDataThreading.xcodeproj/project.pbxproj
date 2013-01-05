@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		5B2BE30716977A9300923B31 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5B2BE30616977A9300923B31 /* Default-568h@2x.png */; };
 		5BBF2BB715C972B000C38108 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 5BBF2BB615C972B000C38108 /* README.md */; };
-		D308752715C195C100E7E50F /* BSThreadSafeContextController.m in Sources */ = {isa = PBXBuildFile; fileRef = D308752515C195C100E7E50F /* BSThreadSafeContextController.m */; };
+		D308752715C195C100E7E50F /* BSThreadSafeCoreDataController.m in Sources */ = {isa = PBXBuildFile; fileRef = D308752515C195C100E7E50F /* BSThreadSafeCoreDataController.m */; };
 		D3889BF115B8AD4700DAD318 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3889BF015B8AD4700DAD318 /* UIKit.framework */; };
 		D3889BF315B8AD4700DAD318 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3889BF215B8AD4700DAD318 /* Foundation.framework */; };
 		D3889BF515B8AD4700DAD318 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3889BF415B8AD4700DAD318 /* CoreGraphics.framework */; };
@@ -26,8 +26,8 @@
 /* Begin PBXFileReference section */
 		5B2BE30616977A9300923B31 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		5BBF2BB615C972B000C38108 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = README.md; path = ../../README.md; sourceTree = "<group>"; };
-		D308752515C195C100E7E50F /* BSThreadSafeContextController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BSThreadSafeContextController.m; path = ../../BSThreadSafeContextController.m; sourceTree = "<group>"; };
-		D308752615C195C100E7E50F /* BSThreadSafeContextController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BSThreadSafeContextController.h; path = ../../BSThreadSafeContextController.h; sourceTree = "<group>"; };
+		D308752515C195C100E7E50F /* BSThreadSafeCoreDataController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BSThreadSafeCoreDataController.m; path = ../../BSThreadSafeCoreDataController.m; sourceTree = "<group>"; };
+		D308752615C195C100E7E50F /* BSThreadSafeCoreDataController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BSThreadSafeCoreDataController.h; path = ../../BSThreadSafeCoreDataController.h; sourceTree = "<group>"; };
 		D3889BEC15B8AD4700DAD318 /* CoreDataThreading.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoreDataThreading.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D3889BF015B8AD4700DAD318 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		D3889BF215B8AD4700DAD318 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -102,8 +102,8 @@
 				D3889C0D15B8B0F700DAD318 /* Model.xcdatamodeld */,
 				D3FF1FED15C46CE80042CAF5 /* Entity.h */,
 				D3FF1FEE15C46CE80042CAF5 /* Entity.m */,
-				D308752615C195C100E7E50F /* BSThreadSafeContextController.h */,
-				D308752515C195C100E7E50F /* BSThreadSafeContextController.m */,
+				D308752615C195C100E7E50F /* BSThreadSafeCoreDataController.h */,
+				D308752515C195C100E7E50F /* BSThreadSafeCoreDataController.m */,
 				5BBF2BB615C972B000C38108 /* README.md */,
 				D3889BF715B8AD4700DAD318 /* Supporting Files */,
 			);
@@ -190,7 +190,7 @@
 				D3889C0115B8AD4700DAD318 /* AppDelegate.m in Sources */,
 				D3889C0415B8AD4700DAD318 /* ViewController.m in Sources */,
 				D3889C0F15B8B0F700DAD318 /* Model.xcdatamodeld in Sources */,
-				D308752715C195C100E7E50F /* BSThreadSafeContextController.m in Sources */,
+				D308752715C195C100E7E50F /* BSThreadSafeCoreDataController.m in Sources */,
 				D3FF1FEF15C46CE80042CAF5 /* Entity.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

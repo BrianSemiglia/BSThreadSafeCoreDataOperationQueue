@@ -6,12 +6,12 @@
 //  Copyright (c) 2012 Brian Semiglia. All rights reserved.
 //
 
-#import "BSThreadSafeContextController.h"
+#import "BSThreadSafeCoreDataController.h"
 
-@interface BSThreadSafeContextController ()
+@interface BSThreadSafeCoreDataController ()
 @end
 
-@implementation BSThreadSafeContextController
+@implementation BSThreadSafeCoreDataController
 
 + (id)sharedInstance
 {
