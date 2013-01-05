@@ -44,7 +44,7 @@ This approach does not allow for concurrent operations that access the managed o
             
             NSError *error = nil;
             NSArray *fetchedObjects = [context executeFetchRequest:request
-                                                            error:&error];
+                                                             error:&error];
 
             dispatch_async(dispatch_get_main_queue(), ^
             {
