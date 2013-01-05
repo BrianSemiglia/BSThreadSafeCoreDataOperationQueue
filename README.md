@@ -8,8 +8,8 @@ Operations do not block the thread they were submitted from.
 The managed object context can be accessed from any thread.
 Accessing the context blocks the operation queue.
 
-This method allows for simple background saving that is thread safe.
-This method does not allow for concurrent save operations.
+This approach allows for simple background saving that is thread safe.
+This approach does not allow for concurrent save operations. 
 
 
     - (void)sampleSave
