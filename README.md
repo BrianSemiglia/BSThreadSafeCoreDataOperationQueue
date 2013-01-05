@@ -2,8 +2,8 @@ BSThreadSafeManagedObjectContext
 ==============================
 A custom NSOperationQueue for non-blocking, thread-safe operations with Core Data. iOS 4+
 - - -
-Operations are submitted to a static, serial operations queue.
-Operations are executed in the order they are submitted.
+Operations are submitted to a static, serial, background operations queue.
+Operations are executed in the order they are submitted and block the operation queue.
 Operations do not block the thread they were submitted from.
 The managed object context can be accessed from any thread.
 Accessing the context blocks the operation queue.
