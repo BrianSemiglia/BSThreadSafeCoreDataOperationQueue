@@ -34,7 +34,8 @@ This approach does not allow for concurrent operations that access the managed o
     {
         [[BSThreadSafeContextController sharedInstance] performBlockWithSharedContext:^(NSManagedObjectContext *context)
         {
-            // Required parameters
+            NSLog(@"Fetching...");
+
             NSFetchRequest *request = [[NSFetchRequest alloc] init];
             NSEntityDescription *entity = [NSEntityDescription entityForName:@"Entity" inManagedObjectContext:context];        
             NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
