@@ -17,9 +17,8 @@ This approach does not allow for concurrent operations that access the managed o
         [[BSThreadSafeContextController sharedInstance] performBlockWithSharedContext:^(NSManagedObjectContext *context)
         {
             NSLog(@"Saving...");
-            Entity *entity = [NSEntityDescription insertNewObjectForEntityForName:@"Entity"
-                                                           inManagedObjectContext:context];
-            entity.title = [NSString stringWithFormat:@"%i", i];
+            NSEntityDescription *entity = [NSEntityDescription insertNewObjectForEntityForName:@"Entity"
+                                                                        inManagedObjectContext:context];
 
             NSError *error = nil;
             [context save:&error];
