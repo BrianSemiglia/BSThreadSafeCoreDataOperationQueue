@@ -20,21 +20,22 @@ Using a proxy context that reflects the state of it's parent context allows safe
 
     - (void)sampleSave
     {
-        BSThreadSafeManagedObjectContext *context = [[BSThreadSafeManagedObjectContext alloc] init];
-        [context performBlockOnParentContext:^(NSManagedObjectContext *parentContext)
+        [[BSThreadSafeContextController sharedInstance] performBlockWithSharedContext:^(NSManagedObjectContext *context)
         {
-            NSManagedObject *entity = [NSEntityDescription insertNewObjectForEntityForName:@"Entity" 
-                                                                    inManagedObjectContext:parentContext];
+            Entity *entity = (Entity *)[NSEntityDescription insertNewObjectForEntityForName:@"Entity"
+                                                                     inManagedObjectContext:context];
+
             NSError *error = nil;
-            [parentContext save:&error];
-        }
-        // Completion handler will run on thread that this method is called from.
-        withCompletionHandler:^
-        {
-            NSLog(@"Save finished.");
+            [context save:&error];
+            
+            // Make sure to dispatch sync.
+            // Dispatch async could cause the accessing thread to hang 
+            // until operation queue has completed all of it's operations.
+            
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                NSLog(@"Save completed.");
+            });
         }];
-    
-        [context release];
     }
     
     - (void)sampleFetch

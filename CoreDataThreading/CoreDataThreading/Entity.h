@@ -12,6 +12,6 @@
 
 @interface Entity : NSManagedObject
 
-@property (nonatomic, retain) NSString * title;
+@property (nonatomic, strong) NSString * title;
 
 @end

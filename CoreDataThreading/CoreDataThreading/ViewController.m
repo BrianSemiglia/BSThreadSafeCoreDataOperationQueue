@@ -7,81 +7,72 @@
 //
 
 #import "ViewController.h"
-#import "AppDelegate.h"
 #import "Entity.h"
-#import "BSThreadSafeManagedObjectContext.h"
-
-@interface ViewController ()
-@property (nonatomic, strong) BSThreadSafeManagedObjectContext *context;
-@end
+#import "BSThreadSafeContextController.h"
 
 @implementation ViewController
-
-@synthesize context = _context;
-@synthesize fetchSpinner = _fetchSpinner;
-@synthesize saveSpinner = _saveSpinner;
 
 - (IBAction)save:(id)sender
 {
     [self.saveSpinner startAnimating];
-    
-    [self.context performBlockOnParentContext:^(NSManagedObjectContext *parentContext)
+
+    [[BSThreadSafeContextController sharedInstance] performBlockWithSharedContext:^(NSManagedObjectContext *context)
     {
-        NSInteger saveCount = 10000;
-        NSMutableArray *objectIDs = [[NSMutableArray alloc] initWithCapacity:saveCount];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.saveSpinner startAnimating];
+        });
+
+        NSLog(@"Saving...");
+        NSInteger saveCount = 100000;
         
-        for (int i = 0; i < saveCount; i++)
-        {
-            Entity *entity = (Entity *)[NSEntityDescription insertNewObjectForEntityForName:@"Entity"
-                                                                     inManagedObjectContext:parentContext];
+        for (int i = 0; i < saveCount; i++) {
+            Entity *entity = [NSEntityDescription insertNewObjectForEntityForName:@"Entity"
+                                                           inManagedObjectContext:context];
             entity.title = [NSString stringWithFormat:@"%i", i];
-            [objectIDs addObject:entity.objectID];
         }
         
         NSError *error = nil;
-        [parentContext save:&error];
+        [context save:&error];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"%@", error ? error : [NSString stringWithFormat:@"Saved %i items.", objectIDs.count]);
+            NSLog(@"Saved.");
+            [self.saveSpinner stopAnimating];
         });
-        
-        [objectIDs release];
-    }
-                        withCompletionHandler:^
-    {
-        [self.saveSpinner stopAnimating];
     }];
 }
 
 - (IBAction)fetch:(id)sender
 {
     [self.fetchSpinner startAnimating];
-    
-    // Required parameters
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Entity" inManagedObjectContext:self.context];
-    request.entity = entity;
-    
-    // Optional parameters
-    NSSortDescriptor *sortDescriptor = [[[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES] autorelease];
-    request.sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
-    
-    [self.context executeAsynchronousFetchRequest:request
-                            withCompletionHandler:^(NSArray *fetchedObjects, NSError *error)
-     {
-         NSLog(@"Fetched %i items", fetchedObjects.count);
-         [self.fetchSpinner stopAnimating];
-     }];
-    
-    [request release];
-}
 
-- (BSThreadSafeManagedObjectContext *)context
-{
-    if (_context)
-        return _context;
-    
-    return _context = [[BSThreadSafeManagedObjectContext alloc] init];
+    [[BSThreadSafeContextController sharedInstance] performBlockWithSharedContext:^(NSManagedObjectContext *context)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.fetchSpinner startAnimating];
+        });
+        
+        NSLog(@"Fetching...");
+        // Required parameters
+        NSFetchRequest *request = [[NSFetchRequest alloc] init];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"Entity" inManagedObjectContext:context];        
+        NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
+        
+        request.entity = entity;
+        request.sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+        
+        NSError *error = nil;
+        NSArray *fetchedObjects = [context executeFetchRequest:request
+                                                               error:&error];
+        
+        dispatch_async(dispatch_get_main_queue(), ^
+        {
+            NSLog(@"Fetched %i items.", fetchedObjects.count);
+            [self.fetchSpinner stopAnimating];
+            
+            // Access the objects safely from another thread.
+            NSLog(@"Sample: %@", fetchedObjects[0]);
+        });
+    }];
 }
 
 @end

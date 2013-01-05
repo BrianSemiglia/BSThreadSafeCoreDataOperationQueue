@@ -11,7 +11,7 @@
 
 @interface ViewController : UIViewController
 
-@property (nonatomic, retain) IBOutlet UIActivityIndicatorView *fetchSpinner, *saveSpinner;
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView *fetchSpinner, *saveSpinner;
 
 - (IBAction)fetch:(id)sender;
 - (IBAction)save:(id)sender;
