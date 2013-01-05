@@ -40,7 +40,7 @@ This approach does not allow for concurrent operations that access the managed o
             NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
             
             request.entity = entity;
-            request.sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+            request.sortDescriptors = @[sortDescriptor];
             
             NSError *error = nil;
             NSArray *fetchedObjects = [context executeFetchRequest:request
