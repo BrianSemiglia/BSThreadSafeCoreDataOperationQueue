@@ -23,7 +23,7 @@
         });
 
         NSLog(@"Saving...");
-        NSInteger saveCount = 5000;
+        NSInteger saveCount = 10000;
         
         for (int i = 0; i < saveCount; i++) {
             Entity *entity = [NSEntityDescription insertNewObjectForEntityForName:@"Entity"
