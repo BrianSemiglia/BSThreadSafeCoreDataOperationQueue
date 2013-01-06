@@ -1,6 +1,6 @@
-BSThreadSafeCoreDataController
+BSThreadSafeCoreDataOperationQueue
 ==============================
-A custom NSOperationQueue for non-blocking, thread-safe operations with Core Data. iOS 4+
+A custom NSOperationQueue for concurrent, thread-safe operations with Core Data. iOS 4+
 - - -
 Operations are submitted to a static, shared, concurrent operations queue.
 Operations are not guaranteed to run in any particular order.
