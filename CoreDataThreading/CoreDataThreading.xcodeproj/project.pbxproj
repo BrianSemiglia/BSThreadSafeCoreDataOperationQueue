@@ -20,6 +20,8 @@
 		D3889C0715B8AD4700DAD318 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3889C0515B8AD4700DAD318 /* ViewController.xib */; };
 		D3889C0F15B8B0F700DAD318 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D3889C0D15B8B0F700DAD318 /* Model.xcdatamodeld */; };
 		D3889C1715B8B23700DAD318 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3889C1615B8B23700DAD318 /* CoreData.framework */; };
+		D3D679C41698FDF300C3DDB4 /* FetchedResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D3D679C21698FDF300C3DDB4 /* FetchedResultsViewController.m */; };
+		D3D679C51698FDF300C3DDB4 /* FetchedResultsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D3D679C31698FDF300C3DDB4 /* FetchedResultsViewController.xib */; };
 		D3FF1FEF15C46CE80042CAF5 /* Entity.m in Sources */ = {isa = PBXBuildFile; fileRef = D3FF1FEE15C46CE80042CAF5 /* Entity.m */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +45,9 @@
 		D3889C0615B8AD4700DAD318 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
 		D3889C0E15B8B0F700DAD318 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		D3889C1615B8B23700DAD318 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		D3D679C11698FDF300C3DDB4 /* FetchedResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FetchedResultsViewController.h; sourceTree = "<group>"; };
+		D3D679C21698FDF300C3DDB4 /* FetchedResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FetchedResultsViewController.m; sourceTree = "<group>"; };
+		D3D679C31698FDF300C3DDB4 /* FetchedResultsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FetchedResultsViewController.xib; sourceTree = "<group>"; };
 		D3FF1FED15C46CE80042CAF5 /* Entity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Entity.h; sourceTree = "<group>"; };
 		D3FF1FEE15C46CE80042CAF5 /* Entity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Entity.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -104,6 +109,9 @@
 				D3FF1FEE15C46CE80042CAF5 /* Entity.m */,
 				D308752615C195C100E7E50F /* BSThreadSafeCoreDataController.h */,
 				D308752515C195C100E7E50F /* BSThreadSafeCoreDataController.m */,
+				D3D679C11698FDF300C3DDB4 /* FetchedResultsViewController.h */,
+				D3D679C21698FDF300C3DDB4 /* FetchedResultsViewController.m */,
+				D3D679C31698FDF300C3DDB4 /* FetchedResultsViewController.xib */,
 				5BBF2BB615C972B000C38108 /* README.md */,
 				D3889BF715B8AD4700DAD318 /* Supporting Files */,
 			);
@@ -176,6 +184,7 @@
 				D3889C0715B8AD4700DAD318 /* ViewController.xib in Resources */,
 				5BBF2BB715C972B000C38108 /* README.md in Resources */,
 				5B2BE30716977A9300923B31 /* Default-568h@2x.png in Resources */,
+				D3D679C51698FDF300C3DDB4 /* FetchedResultsViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -192,6 +201,7 @@
 				D3889C0F15B8B0F700DAD318 /* Model.xcdatamodeld in Sources */,
 				D308752715C195C100E7E50F /* BSThreadSafeCoreDataController.m in Sources */,
 				D3FF1FEF15C46CE80042CAF5 /* Entity.m in Sources */,
+				D3D679C41698FDF300C3DDB4 /* FetchedResultsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

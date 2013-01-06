@@ -23,18 +23,19 @@
         });
 
         NSLog(@"Saving...");
-        NSInteger saveCount = 100000;
+        NSInteger saveCount = 5000;
         
         for (int i = 0; i < saveCount; i++) {
             Entity *entity = [NSEntityDescription insertNewObjectForEntityForName:@"Entity"
                                                            inManagedObjectContext:context];
             entity.title = [NSString stringWithFormat:@"%i", i];
+            NSLog(@"%i", i);
         }
         
         NSError *error = nil;
         [context save:&error];
         
-        dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_sync(dispatch_get_main_queue(), ^{
             NSLog(@"Saved.");
             [self.saveSpinner stopAnimating];
         });
@@ -64,13 +65,14 @@
         NSArray *fetchedObjects = [context executeFetchRequest:request
                                                                error:&error];
         
-        dispatch_async(dispatch_get_main_queue(), ^
+        dispatch_sync(dispatch_get_main_queue(), ^
         {
             NSLog(@"Fetched %i items.", fetchedObjects.count);
             [self.fetchSpinner stopAnimating];
             
             // Access the objects safely from another thread.
-            NSLog(@"Sample: %@", fetchedObjects[0]);
+            if (fetchedObjects.count > 0)
+                NSLog(@"Sample: %@", fetchedObjects[0]);
         });
     }];
 }

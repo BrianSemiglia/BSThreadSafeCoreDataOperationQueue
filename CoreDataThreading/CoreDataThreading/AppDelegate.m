@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "ViewController.h"
+#import "FetchedResultsViewController.h"
 
 @implementation AppDelegate
 
@@ -16,8 +17,14 @@
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    self.viewController = [[ViewController alloc] initWithNibName:@"ViewController" bundle:nil];
-    self.window.rootViewController = self.viewController;
+    
+    ViewController *viewController = [[ViewController alloc] init];
+    FetchedResultsViewController *viewController2 = [[FetchedResultsViewController alloc] init];
+    
+    UITabBarController *tabBarViewController = [[UITabBarController alloc] init];
+    tabBarViewController.viewControllers = @[viewController, viewController2];
+    
+    self.window.rootViewController = tabBarViewController;
     [self.window makeKeyAndVisible];
     return YES;
 }

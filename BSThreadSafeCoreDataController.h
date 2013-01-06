@@ -19,10 +19,8 @@
 
 @interface BSThreadSafeCoreDataController : NSOperationQueue
 
-// Must be atomic. May cause crash if not.
-@property (atomic, strong) NSManagedObjectContext *managedObjectContext;
-
 + (id)sharedInstance;
 - (void)performBlockWithSharedContext:(void (^)(NSManagedObjectContext *context))block;
++ (NSManagedObjectContext *)managedObjectContext;
 
 @end

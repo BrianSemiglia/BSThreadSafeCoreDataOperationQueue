@@ -9,9 +9,22 @@
 #import "BSThreadSafeCoreDataController.h"
 
 @interface BSThreadSafeCoreDataController ()
++ (NSPersistentStoreCoordinator *)persistentStoreCoordinator;
++ (NSManagedObjectModel *)managedObjectModel;
++ (NSURL *)applicationDocumentsDirectory;
 @end
 
 @implementation BSThreadSafeCoreDataController
+
+- (void)performBlockWithSharedContext:(void (^)(NSManagedObjectContext *context))block
+{
+    NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:^
+    {
+        block([BSThreadSafeCoreDataController managedObjectContext]);
+    }];
+    
+    [self addOperation:blockOperation];
+}
 
 + (id)sharedInstance
 {
@@ -20,55 +33,45 @@
     
     dispatch_once(&pred, ^{
         sharedOperationQueue = [[self alloc] init];
-        sharedOperationQueue.maxConcurrentOperationCount = 1;
     });
     
     return sharedOperationQueue;
 }
 
-
-- (void)performBlockWithSharedContext:(void (^)(NSManagedObjectContext *context))block
-{    
-    NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:^
-    {
-        if (!self.managedObjectContext) {
-            self.managedObjectContext = [[NSManagedObjectContext alloc] init];
-            self.managedObjectContext.persistentStoreCoordinator = self.persistentStoreCoordinator;
-        }
-        
-        block(self.managedObjectContext);
-    }];
++ (NSManagedObjectContext *)managedObjectContext
+{
+    NSManagedObjectContext *managedObjectContext = [[NSManagedObjectContext alloc] init];
+    managedObjectContext.persistentStoreCoordinator = [self persistentStoreCoordinator];
     
-    [self addOperation:blockOperation];
+    return managedObjectContext;
 }
 
-- (NSPersistentStoreCoordinator *)persistentStoreCoordinator
-{
-    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:@"Model.sqlite"];
++ (NSPersistentStoreCoordinator *)persistentStoreCoordinator
+{    
+    NSManagedObjectModel *model = [BSThreadSafeCoreDataController managedObjectModel];
+    NSPersistentStoreCoordinator *persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
+    NSURL *storeURL = [[BSThreadSafeCoreDataController applicationDocumentsDirectory] URLByAppendingPathComponent:@"Model.sqlite"];
     NSError *error = nil;
-    
-    NSPersistentStoreCoordinator *persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:self.managedObjectModel];
+
     if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
-                                         configuration:nil
-                                                   URL:storeURL
-                                               options:nil
-                                                 error:&error]) {
+                                                  configuration:nil
+                                                            URL:storeURL
+                                                        options:nil
+                                                          error:&error]) {
         return nil;
     }
     
     return persistentStoreCoordinator;
 }
 
-- (NSManagedObjectModel *)managedObjectModel
++ (NSManagedObjectModel *)managedObjectModel
 {    
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"Model" withExtension:@"momd"];
     NSManagedObjectModel *managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
     return managedObjectModel;
 }
 
-#pragma mark - Context Builders
-
-- (NSURL *)applicationDocumentsDirectory
++ (NSURL *)applicationDocumentsDirectory
 {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory
                                                    inDomains:NSUserDomainMask] lastObject];
