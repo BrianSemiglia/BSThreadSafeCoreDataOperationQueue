@@ -280,19 +280,6 @@
          shouldBeEnabled = "No"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
-         filePath = "CoreDataThreading/ViewController.m"
-         timestampString = "365194576.392231"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "22"
-         endingLineNumber = "22"
-         landmarkName = "-save:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
          filePath = "../../Documents/ConcurrentManagedObjectContext.git (trunk)/BSConcurrentManagedObjectContext.m"
          timestampString = "365198577.973226"
          startingColumnNumber = "9223372036854775807"
@@ -313,32 +300,6 @@
          startingLineNumber = "71"
          endingLineNumber = "71"
          landmarkName = "-performAsynchronousBlockOnParentContext:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "CoreDataThreading/ViewController.m"
-         timestampString = "365198600.770881"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "29"
-         endingLineNumber = "29"
-         landmarkName = "-save:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "CoreDataThreading/ViewController.m"
-         timestampString = "379129454.467797"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "47"
-         endingLineNumber = "47"
-         landmarkName = "-fetch:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint

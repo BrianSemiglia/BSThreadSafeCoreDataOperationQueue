@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import "Entity.h"
-#import "BSThreadSafeCoreDataController.h"
+#import "BSThreadSafeCoreDataOperationQueue.h"
 
 @implementation ViewController
 
@@ -16,7 +16,7 @@
 {
     [self.saveSpinner startAnimating];
 
-    [[BSThreadSafeCoreDataController sharedInstance] performBlockWithSharedContext:^(NSManagedObjectContext *context)
+    [[BSThreadSafeCoreDataOperationQueue sharedInstance] addOperationWithContext:^(NSManagedObjectContext *context)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.saveSpinner startAnimating];
@@ -46,7 +46,7 @@
 {
     [self.fetchSpinner startAnimating];
 
-    [[BSThreadSafeCoreDataController sharedInstance] performBlockWithSharedContext:^(NSManagedObjectContext *context)
+    [[BSThreadSafeCoreDataOperationQueue sharedInstance] addOperationWithContext:^(NSManagedObjectContext *context)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.fetchSpinner startAnimating];

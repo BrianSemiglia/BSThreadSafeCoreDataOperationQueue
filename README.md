@@ -2,19 +2,56 @@ BSThreadSafeCoreDataController
 ==============================
 A custom NSOperationQueue for non-blocking, thread-safe operations with Core Data. iOS 4+
 - - -
-Operations are submitted to a static, serial, background operations queue.
-Operations are executed in the order they are submitted and block the operation queue.
+Operations are submitted to a static, shared, concurrent operations queue.
+Operations are not guaranteed to run in any particular order.
 Operations do not block the thread they were submitted from.
-The managed object context can be accessed from any thread.
-Accessing the context blocks the operation queue.
+A managed object context is created for each operation.
+The managed object context provided to the block can be access from any thread/queue but not concurrently.
+The confinement of the MOC to the block makes it easy to manage accessing the context from only one thread/queue at a time.
 
-This approach allows for simple background saving that is thread safe.
-This approach does not allow for concurrent operations that access the managed object context.
-
+    [[BSThreadSafeCoreDataOperationQueue sharedInstance] performBlockWithSharedContext:^(NSManagedObjectContext *context)
+     {
+         // 1. Allowed: SYNC operations submitted to other threads/queues.
+         {
+              // Operation will block until completed.
+              // Safe to access context after operation.
+ 
+              dispatch_sync(dispatch_get_main_queue(), ^{
+                  // Access context on main queue.
+              });
+     
+              [context message];
+         }
+ 
+         // 2. Disallowed: ASYNC operations submitted to other threads/queues BEFORE any additional messages to the context.
+         {
+              // Operation will not block.
+              // Because of the message to context below the block, a situation is created 
+              // where the context might be accessed by two different threads/queues at the same time.
+ 
+              dispatch_async(dispatch_get_main_queue(), ^{
+                  // Access context on main queue.
+              });
+     
+              [context message];
+         }
+ 
+         // 3. Allowed: ASYNC operations submitted to other threads/queues AFTER any additional messages to the context.
+         {
+              // Operation will not block but is last to message context thus
+              // guaranteeing the context will not be accessed by any other threads/queues.
+              
+              dispatch_async(dispatch_get_main_queue(), ^{
+                  // Access context on main queue.
+              });
+ 
+              // No additional messages to the context.
+         }
+     }];
 
     - (void)sampleSave
     {
-        [[BSThreadSafeContextController sharedInstance] performBlockWithSharedContext:^(NSManagedObjectContext *context)
+        [[BSThreadSafeContextController sharedInstance] addOperationWithContext:^(NSManagedObjectContext *context)
         {
             NSLog(@"Saving...");
             NSEntityDescription *entity = [NSEntityDescription insertNewObjectForEntityForName:@"Entity"
@@ -31,7 +68,7 @@ This approach does not allow for concurrent operations that access the managed o
     
     - (void)sampleFetch
     {
-        [[BSThreadSafeContextController sharedInstance] performBlockWithSharedContext:^(NSManagedObjectContext *context)
+        [[BSThreadSafeContextController sharedInstance] addOperationWithContext:^(NSManagedObjectContext *context)
         {
             NSLog(@"Fetching...");
 

@@ -7,7 +7,7 @@
 //
 
 #import "FetchedResultsViewController.h"
-#import "BSThreadSafeCoreDataController.h"
+#import "BSThreadSafeCoreDataOperationQueue.h"
 #import "Entity.h"
 
 @interface FetchedResultsViewController ()
@@ -92,7 +92,7 @@
     if (_managedObjectContext)
         return _managedObjectContext;
     
-    _managedObjectContext = [BSThreadSafeCoreDataController managedObjectContext];
+    _managedObjectContext = [BSThreadSafeCoreDataOperationQueue managedObjectContext];
     return _managedObjectContext;
 }
 
