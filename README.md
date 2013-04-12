@@ -7,7 +7,7 @@ Operations are not guaranteed to run in any particular order.
 Operations do not block the thread they were submitted from.
 A managed object context is created for each operation.
 The managed object context provided to the block can be access from any thread/queue but not concurrently.
-The confinement of the MOC to the block makes it easy to manage accessing the context from only one thread/queue at a time.
+The confinement of the MOC to the block makes it easy to manage accessing the context from different threads/queues.
 
      // 1. Allowed: SYNC operations submitted to other threads/queues.
      [[BSThreadSafeContextController sharedInstance] addOperationWithContext:^(NSManagedObjectContext *context)
