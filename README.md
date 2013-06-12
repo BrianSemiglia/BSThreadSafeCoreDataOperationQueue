@@ -49,11 +49,12 @@ The confinement of the MOC to the block makes it easy to manage accessing the co
           // No additional messages to the context.
      }];
 
+.
+
     - (void)sampleSave
     {
         [[BSThreadSafeContextController sharedInstance] addOperationWithContext:^(NSManagedObjectContext *context)
         {
-            NSLog(@"Saving...");
             NSEntityDescription *entity = [NSEntityDescription insertNewObjectForEntityForName:@"Entity"
                                                                         inManagedObjectContext:context];
 
@@ -65,13 +66,11 @@ The confinement of the MOC to the block makes it easy to manage accessing the co
             });
         }];
     }
-    
+
     - (void)sampleFetch
     {
         [[BSThreadSafeContextController sharedInstance] addOperationWithContext:^(NSManagedObjectContext *context)
         {
-            NSLog(@"Fetching...");
-
             NSFetchRequest *request = [[NSFetchRequest alloc] init];
             NSEntityDescription *entity = [NSEntityDescription entityForName:@"Entity" inManagedObjectContext:context];        
             NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"title" ascending:YES];
